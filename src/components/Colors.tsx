@@ -11,7 +11,7 @@ const colors = [
     },
     {
         color: "Branco",
-        bg: "bg-white",
+        bg: "bg-zinc-300",
     },
     {
         color: "Vinho",

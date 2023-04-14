@@ -14,7 +14,7 @@ export function ItemColor({ color, bg }: ItemColorProps) {
                 <div className={`flex items-center justify-center w-5 h-5 rounded-full ${bg}`}>
                     <Check
                         size={24}
-                        className={clsx("", { "text-white": bg !== "bg-white", "text-black": bg === "bg-white" })} weight="bold"
+                        className={clsx("", { "text-white": bg !== "bg-zinc-300", "text-black": bg === "bg-zinc-300" })} weight="bold"
                     />
                 </div>
             </div>
