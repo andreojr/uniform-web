@@ -10,28 +10,30 @@ import { api } from "../lib/api";
 import clsx from "clsx";
 import { useNavigate } from "react-router-dom";
 
-export interface UserDataProps {
+interface UserDataProps {
     nome: string;
     matricula: string;
     curso: string;
     tamanho: string;
-    cor: string;
     quantidade: string;
 }
-
-const precoUnitario = 27;
-
 const defaultUserData = {
     nome: "",
     matricula: "",
     curso: "engcomp",
-    cor: "",
-    quantidade: "1",
     tamanho: "",
+    quantidade: "1",
 };
+
+export interface ShirtProps {
+    cor: string;
+}
+
+const precoUnitario = 27;
 
 export function Cadastro() {
     const [userData, setUserData] = useState<UserDataProps>(defaultUserData);
+    const [shirts, setShirts] = useState<Array<ShirtProps>>([]);
     const [error, setError] = useState(false);
     const navigate = useNavigate();
 
@@ -39,9 +41,10 @@ export function Cadastro() {
         e.preventDefault();
 
         console.log(userData);
+        console.log(shirts);
 
         try {
-            await api.post("/requests", {...userData, quantidade: Number(userData.quantidade)});
+            await api.post("/requests", {...userData, shirts});
             setUserData(defaultUserData);
             setError(false);
 
@@ -139,7 +142,7 @@ export function Cadastro() {
                             </div>
                             <div className="flex flex-col gap-2">
                                 <p className="text-white font-black text-md">Cor</p>
-                                <Colors userData={userData} setUserData={setUserData} />
+                                <Colors shirtsData={shirts} setShirts={setShirts} quantidade={Number(userData.quantidade)} />
                             </div>
                         </div>
 
