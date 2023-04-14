@@ -14,20 +14,16 @@ const colors = [
         bg: "bg-white",
     },
     {
-        color: "Vermelho",
-        bg: "bg-red-500",
-    },
-    {
-        color: "Amarelo",
-        bg: "bg-yellow-500",
+        color: "Vinho",
+        bg: "bg-red-600",
     },
     {
         color: "Verde",
-        bg: "bg-green-500",
+        bg: "bg-green-600",
     },
     {
         color: "Azul",
-        bg: "bg-blue-500",
+        bg: "bg-blue-600",
     },
 ];
 
