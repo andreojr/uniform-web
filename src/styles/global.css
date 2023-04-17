@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+[data-radix-scroll-area-viewport] > div {
+    display: flex !important;
+    justify-content: center;
+}

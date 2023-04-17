@@ -7,6 +7,7 @@ interface AuthContextProps {
 }
 
 interface User {
+    id: string;
     nome: string;
     matricula: string;
 }

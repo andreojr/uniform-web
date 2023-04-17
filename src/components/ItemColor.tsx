@@ -3,22 +3,24 @@ import * as ToggleGroup from "@radix-ui/react-toggle-group";
 import clsx from "clsx";
 
 interface ItemColorProps {
-    color: string;
-    bg: string;
+    color: {
+        color: string;
+        bg: string;
+    };
 }
 
-export function ItemColor({ color, bg }: ItemColorProps) {
+export function ItemColor({ color }: ItemColorProps) {
     return (
-        <ToggleGroup.Item className="group relative" value={color} aria-label={color}>
+        <ToggleGroup.Item className="group relative" value={JSON.stringify(color)} aria-label={color.color}>
             <div className={clsx("group-data-[state=on]:flex hidden w-full h-full absolute rounded-md items-center justify-center")}>
-                <div className={`flex items-center justify-center w-5 h-5 rounded-full ${bg}`}>
+                <div className={`flex items-center justify-center w-5 h-5 rounded-full ${color.bg}`}>
                     <Check
                         size={24}
-                        className={clsx("", { "text-white": bg !== "bg-zinc-300", "text-black": bg === "bg-zinc-300" })} weight="bold"
+                        className={clsx("", { "text-white": color.bg !== "bg-zinc-300", "text-black": color.bg === "bg-zinc-300" })} weight="bold"
                     />
                 </div>
             </div>
-            <div className={`w-full h-10 ${bg} rounded-md`} />
+            <div className={`w-full h-10 ${color.bg} rounded-md`} />
         </ToggleGroup.Item>
     );
 }
