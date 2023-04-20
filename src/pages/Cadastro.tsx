@@ -7,7 +7,7 @@ import * as ScrollArea from '@radix-ui/react-scroll-area';
 import { useState } from "react";
 import { api } from "../lib/api";
 import clsx from "clsx";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface UserDataProps {
     nome: string;
@@ -23,36 +23,26 @@ const defaultUserData = {
 };
 
 export interface ShirtProps {
-    modelo: "basico" | "codigo";
     tamanho: string;
     cor: {
         color: string;
         bg: string;
-        preview: {
-            basico: string,
-            codigo: string;
-        };
-        previewVerse: {
-            basico: string;
-            codigo: string;
-        };
+        preview: string;
+        previewVerse: string;
+        verse: boolean;
     } | null;
-    previewVerse: boolean;
 }
 
-const precoUnitario = 27;
+export const precoUnitario = 27;
 
 export function Cadastro() {
     const [userData, setUserData] = useState<UserDataProps>(defaultUserData);
-    const [customShirts, setCustomShirts] = useState<Array<ShirtProps>>([{cor:null,tamanho:"",previewVerse:false,modelo:"codigo"}]);
+    const [customShirts, setCustomShirts] = useState<Array<ShirtProps>>([{cor:null,tamanho:""}]);
     const [error, setError] = useState(false);
     const navigate = useNavigate();
 
     async function handleRequest(e: React.MouseEvent) {
         e.preventDefault();
-
-        console.log(userData);
-        console.log(customShirts);
 
         try {
 
@@ -61,7 +51,7 @@ export function Cadastro() {
             const shirts: Array<ShirtProps> = [];
             customShirts.forEach(shirt => {
                 if (shirt.cor)
-                    shirts.push({modelo: shirt.modelo, tamanho: shirt.tamanho, cor: shirt.cor.color});
+                    shirts.push({tamanho: shirt.tamanho, cor: shirt.cor.color});
             });
 
             if (shirts.length !== userData.quantidade) {
@@ -69,6 +59,7 @@ export function Cadastro() {
                 return;
             }
 
+            console.log({ nome, matricula, curso, shirts });
             await api.post("/requests", { nome, matricula, curso, shirts });
             setError(false);
             navigate("/cadastro-finalizado");
@@ -79,9 +70,9 @@ export function Cadastro() {
 
     return (
         <div className="w-full pt-20 flex flex-col items-center gap-16">
-            <div className="flex flex-col">
+            <Link className="flex flex-col" to="/">
                 <img src={logo} alt="UniForm" className="h-10" />
-            </div>
+            </Link>
             <ScrollArea.Root className="!static w-full h-full overflow-hidden flex justify-center">
                 <ScrollArea.Viewport className="w-full h-full pb-16">
                     <form className="flex flex-col justify-center gap-12 h-full">

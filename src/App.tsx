@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Login } from "./pages/Login";
 import { AuthProvider } from "./contexts/AuthContext";
 import { Home } from "./pages/Home";
+import { Pay } from "./pages/Pay";
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
             <Route path="/cadastro" element={<Cadastro />} />
             <Route path="/cadastro-finalizado" element={<CadastroFinalizado />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/pay/:user_id" element={<Pay />} />
           </Routes>
         </AuthProvider>
       </Router>

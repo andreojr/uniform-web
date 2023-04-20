@@ -5,7 +5,7 @@ import { ArrowFatRight } from "@phosphor-icons/react";
 import clsx from "clsx";
 import { api } from "../lib/api";
 import { AuthContext } from "../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export function Login() {
     const {signed, signIn} = useContext(AuthContext);
@@ -27,9 +27,9 @@ export function Login() {
 
     return (
         <div className="py-20 flex flex-col items-center text-white text-xl">
-            <div className="flex flex-col">
+            <Link className="flex flex-col" to="/">
                 <img src={logo} alt="UniForm" className="h-10" />
-            </div>
+            </Link>
             <form className="flex flex-col justify-center h-full gap-5">
                 <Input
                     placeholder="Sua Matrícula"
