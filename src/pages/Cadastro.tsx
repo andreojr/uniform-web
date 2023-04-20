@@ -48,7 +48,7 @@ export function Cadastro() {
 
             const { nome, matricula, curso } = userData;
             
-            const shirts: Array<ShirtProps> = [];
+            const shirts: {tamanho: string; cor: string}[] = [];
             customShirts.forEach(shirt => {
                 if (shirt.cor)
                     shirts.push({tamanho: shirt.tamanho, cor: shirt.cor.color});
