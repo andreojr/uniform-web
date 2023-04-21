@@ -50,14 +50,19 @@ export function Home() {
         }
     }
 
+    function handleShowName(name: string) {
+        const firstName = name.trim().split(" ")[0];
+        return firstName.charAt(0).toUpperCase() + firstName.slice(1);
+    }
+
     return signed && user ? (
-        <div className="flex flex-col text-white text-2xl gap-10 py-20">
+        <div className="flex flex-col text-white text-2xl gap-10 py-12">
             <div className="flex flex-col">
                 <img src={logo} alt="UniForm" className="h-10" />
             </div>
             <div className="flex flex-col gap-10 h-full justify-center">
                 <div className="flex flex-col items-center">
-                    <p className="font-black text-3xl">Olá, {user.nome}!</p>
+                    <p className="font-black text-3xl">Olá, {handleShowName(user.nome)}!</p>
                     {mySolic && mySolic.length > 0 && (
                         <p className="text-base mt-2">
                             Você já enviou sua solicitação.
@@ -83,8 +88,9 @@ export function Home() {
                                 });
                                 
                                 return !!preview && (
-                                    <div className="flex flex-col items-center bg-zinc-700 rounded-md p-2">
+                                    <div className="relative flex flex-col items-center bg-zinc-700 rounded-md p-2">
                                         <img src={preview} alt="Preview" className="h-32" />
+                                        <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-zinc-700/70 p-2 rounded-md font-black text-sm">{shirt.tamanho}</p>
                                         <Trash onClick={() => handleDeleteSolic(shirt.id)} size={24} className="text-red-400 cursor-pointer" />
                                     </div>
                                 );

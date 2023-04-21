@@ -69,7 +69,6 @@ export function Pay() {
                         className="w-[14rem] h-[14rem] rounded-md scale-[1.8]"
                     />
                 </div>
-
                 
             </div>
         </div>

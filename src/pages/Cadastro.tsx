@@ -103,7 +103,25 @@ export function Cadastro() {
                                 <p className="text-white font-black text-2xl">Pedido</p>
                                 <div className="flex w-full h-8 justify-between items-center">
                                     <p className="text-base text-white font-black">Quantidade: </p>
-                                    <Input type="number" style={{ width: "33%" }} min={1} max={99} value={userData.quantidade} onChange={e => setUserData({...userData, quantidade: Number(e.target.value)})} />
+                                    <ToggleGroup.Root
+                                        type="single"
+                                        aria-label="Quantidade"
+                                        className="flex gap-5"
+                                        value={String(userData.quantidade)}
+                                        onValueChange={quantidade => {
+                                            setUserData({...userData, quantidade: Number(quantidade) })
+                                        }}
+                                    >
+                                        <ToggleGroup.Item className="bg-zinc-700 w-full px-3 py-2 rounded-md data-[state=on]:bg-violet-600 transition-colors" value="1" aria-label="1">
+                                            <span className="font-black text-white">1</span>
+                                        </ToggleGroup.Item>
+                                        <ToggleGroup.Item className="bg-zinc-700 w-full px-3 py-2 rounded-md data-[state=on]:bg-violet-600 transition-colors" value="2" aria-label="2">
+                                            <span className="font-black text-white">2</span>
+                                        </ToggleGroup.Item>
+                                        <ToggleGroup.Item className="bg-zinc-700 w-full px-3 py-2 rounded-md data-[state=on]:bg-violet-600 transition-colors" value="3" aria-label="3">
+                                            <span className="font-black text-white">3</span>
+                                        </ToggleGroup.Item>
+                                    </ToggleGroup.Root>
                                 </div>
                             </div>
                             <Shirts customShirts={customShirts} setCustomShirts={setCustomShirts} quantidade={userData.quantidade} />

@@ -30,13 +30,13 @@ export function Login() {
             <Link className="flex flex-col" to="/">
                 <img src={logo} alt="UniForm" className="h-10" />
             </Link>
-            <form className="flex flex-col justify-center h-full gap-5">
+            <form className="flex flex-col justify-center h-full gap-5 w-full">
                 <Input
                     placeholder="Sua Matrícula"
                     value={matricula}
                     onChange={e => setMatricula(e.target.value)}
                 />
-                <button type="submit" onClick={handleLogin} className={clsx("w-full rounded-md flex items-center justify-center py-2 transition-colors", {
+                <button type="submit" onClick={handleLogin} className={clsx("rounded-md flex items-center justify-center py-2 transition-colors", {
                     "bg-red-500 hover:bg-red-400": error,
                     "bg-violet-600 hover:bg-violet-600": !error,
                 })}>
