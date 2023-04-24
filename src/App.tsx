@@ -15,6 +15,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/cadastro" element={<Cadastro />} />
+            <Route path="/cadastro/:matricula" element={<Cadastro userExists />} />
             <Route path="/cadastro-finalizado" element={<CadastroFinalizado />} />
             <Route path="/login" element={<Login />} />
             <Route path="/pay/:user_id" element={<Pay />} />

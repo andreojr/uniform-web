@@ -88,7 +88,7 @@ export function Shirts({ customShirts, setCustomShirts, quantidade }: ShirtsProp
                         !customShirt.cor
                         ?
                             <div className="bg-zinc-700 w-[17rem] h-full rounded-md flex items-center justify-center">
-                                <p className="text-white text-base w-3/4 text-center">Escolha uma cor para pré-visualização</p>
+                                <p className="text-white text-lg w-3/4 text-center">Escolha uma cor para pré-visualização...</p>
                             </div>
                         :
                             
@@ -107,13 +107,13 @@ export function Shirts({ customShirts, setCustomShirts, quantidade }: ShirtsProp
                                     }
                                     setCustomShirts(updateCustomShirts);
                                 }}
-                                className="bg-black w-full h-full rounded-md cursor-pointer flex items-end"
+                                className="bg-zinc-700 w-full h-full rounded-md cursor-pointer flex items-end"
                                 style={{
                                     backgroundImage: `url(${customShirt.cor.verse ? customShirt.cor.previewVerse : customShirt.cor.preview})`,
                                     backgroundSize: "cover",
                                     backgroundPosition: "center",
                                 }}
-                            ><p className="w-full bg-violet-600 text-white text-sm p-2 text-center">Clique para ver {!customShirt.cor.verse ? "a frente" : "o verso"}...</p></div>       
+                            ><p className="w-full bg-violet-600 text-white text-sm p-2 text-center">Clique para ver {customShirt.cor.verse ? "a frente" : "o verso"}...</p></div>       
                         }
                     </div>
                     <div className="flex flex-col gap-2">

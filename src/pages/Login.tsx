@@ -26,11 +26,11 @@ export function Login() {
     }
 
     return (
-        <div className="py-20 flex flex-col items-center text-white text-xl">
+        <div className="py-20 flex flex-col items-center text-white">
             <Link className="flex flex-col" to="/">
-                <img src={logo} alt="UniForm" className="h-10" />
+                <img src={logo} alt="UniForm" className="h-7" />
             </Link>
-            <form className="flex flex-col justify-center h-full gap-5 w-full">
+            <form className="flex flex-col justify-center h-full gap-5">
                 <Input
                     placeholder="Sua Matrícula"
                     value={matricula}
