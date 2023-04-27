@@ -9,11 +9,17 @@ import classica_branca from "../assets/classica/branca.png";
 import classica_verde from "../assets/classica/verde.png";
 import classica_azul from "../assets/classica/azul.png";
 import classica_vinho from "../assets/classica/vinho.png";
+import classica_vermelha from "../assets/classica/vermelha.png";
+import classica_azul_claro from "../assets/classica/azul_claro.png";
+import classica_cinza from "../assets/classica/cinza.png";
+
+
 import alternativa_preta from "../assets/alternativa/preta.png";
 import alternativa_branca from "../assets/alternativa/branca.png";
-import alternativa_verde from "../assets/alternativa/azul.png";
-import alternativa_azul from "../assets/alternativa/verde.png";
+import alternativa_verde from "../assets/alternativa/verde.png";
+import alternativa_azul from "../assets/alternativa/azul.png";
 import alternativa_vinho from "../assets/alternativa/vinho.png";
+
 import alternativa_preta_verso from "../assets/alternativa/preta_verso.png";
 import alternativa_branca_verso from "../assets/alternativa/branca_verso.png";
 import alternativa_verde_verso from "../assets/alternativa/verde_verso.png";
@@ -39,22 +45,6 @@ export const colors: Array<Color> = [
         verse: false,
     },
     {
-        color: "branca",
-        bg: "bg-white",
-        classica: classica_branca,
-        alternativa: alternativa_branca,
-        alternativaVerse: alternativa_branca_verso,
-        verse: false,
-    },
-    {
-        color: "vinho",
-        bg: "bg-red-600",
-        classica: classica_vinho,
-        alternativa: alternativa_vinho,
-        alternativaVerse: alternativa_vinho_verso,
-        verse: false,
-    },
-    {
         color: "verde",
         bg: "bg-green-600",
         classica: classica_verde,
@@ -63,11 +53,51 @@ export const colors: Array<Color> = [
         verse: false,
     },
     {
+        color: "vinho",
+        bg: "bg-red-900",
+        classica: classica_vinho,
+        alternativa: alternativa_vinho,
+        alternativaVerse: alternativa_vinho_verso,
+        verse: false,
+    },
+    {
+        color: "vermelha",
+        bg: "bg-red-600",
+        classica: classica_vermelha,
+        alternativa: alternativa_vinho,
+        alternativaVerse: alternativa_vinho_verso,
+        verse: false,
+    },
+    {
         color: "azul",
-        bg: "bg-blue-600",
+        bg: "bg-blue-900",
         classica: classica_azul,
         alternativa: alternativa_azul,
         alternativaVerse: alternativa_azul_verso,
+        verse: false,
+    },
+    {
+        color: "azul_claro",
+        bg: "bg-blue-400",
+        classica: classica_azul_claro,
+        alternativa: alternativa_azul,
+        alternativaVerse: alternativa_azul_verso,
+        verse: false,
+    },
+    {
+        color: "branca",
+        bg: "bg-white",
+        classica: classica_branca,
+        alternativa: alternativa_branca,
+        alternativaVerse: alternativa_branca_verso,
+        verse: false,
+    },
+    {
+        color: "cinza",
+        bg: "bg-zinc-400",
+        classica: classica_cinza,
+        alternativa: alternativa_branca,
+        alternativaVerse: alternativa_branca_verso,
         verse: false,
     },
 ];
@@ -100,7 +130,7 @@ export function Shirts({ customShirts, setCustomShirts, quantidade }: ShirtsProp
                         {
                         !customShirt.cor
                         ?
-                            <div className="bg-zinc-700 w-[17rem] h-full rounded-md flex items-center justify-center">
+                            <div className="bg-zinc-700 w-[15.5rem] h-full rounded-md flex items-center justify-center">
                                 <p className="text-white text-base w-3/4 text-center">Personalize para<br />pré-visualização...</p>
                             </div>
                         :

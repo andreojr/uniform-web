@@ -141,7 +141,7 @@ export function Home() {
                                 </div>
                             }
                             {
-                                (countSolic && countSolic >= 60) &&
+                                (countSolic && countSolic >= 30) &&
                                 (
                                     !paid.paid
                                     ?

@@ -37,7 +37,7 @@ export function Pay() {
             }
         });
         api.get("/requests/count").then(response => {
-            const frete = Math.round(((freteTotal / response.data) * 100) / 100);
+            const frete = freteTotal / response.data;
             setFrete(frete);
         });
     }, []);
@@ -96,8 +96,8 @@ export function Pay() {
                 </div>
                 <div className="flex max-w-[21rem] text-yellow-600">
                     <Info weight="fill" className="text-2xl" />
-                    <div className="flex flex-col text-justify ml-1 w-[12rem] -m-0.5">
-                        <p className="text-sm">Por conta de falta de aviso prévio, o valor do frete é opcional.</p>
+                    <div className="flex flex-col text-justify ml-1 w-[11rem] -m-0.5">
+                        <p className="text-xs">Por conta da falta de aviso prévio, o valor do frete é opcional.</p>
                     </div>
                 </div>
                 <div className="flex flex-col gap-2">

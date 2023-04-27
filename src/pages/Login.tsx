@@ -32,7 +32,7 @@ export function Login() {
             </Link>
             <form className="flex flex-col justify-center h-full gap-5">
                 <Input
-                    placeholder="Sua Matrícula"
+                    placeholder="Matrícula ou WhatsApp (só números)"
                     value={matricula}
                     onChange={e => setMatricula(e.target.value)}
                 />
