@@ -11,6 +11,7 @@ interface Solic {
     id: string;
     cor: string;
     tamanho: string;
+    modelo: "classica" | "alternativa";
     pay: boolean;
 }
 
@@ -92,7 +93,7 @@ export function Home() {
 
                             {(mySolic.length > 0) && (
                                 <div className="w-full flex justify-between items-center">
-                                    <h4 className="font-black text-xl">Minhas solicitações</h4>
+                                    <h4 className="font-black text-xl">Solicitações</h4>
                                     <Link to={`/cadastro/${user.matricula}`}>
                                         <Plus size={24} />
                                     </Link>
@@ -106,7 +107,7 @@ export function Home() {
 
                                                     let preview;
                                                     colors.forEach(color => {
-                                                        if (shirt.cor === color.color) preview = color.preview;
+                                                        if (shirt.cor === color.color) preview = color[shirt.modelo];
                                                     });
                                                     
                                                     return !!preview && (
@@ -130,17 +131,17 @@ export function Home() {
                                     </ScrollArea.Root>  
 
                             {
-                                (countSolic && countSolic < 30) &&
+                                (countSolic && countSolic < 60) &&
                                 <div className="flex max-w-[21rem] text-yellow-600">
                                     <Info weight="fill" className="text-2xl" />
                                     <div className="flex flex-col text-justify ml-2 w-[18rem]">
-                                        <p className="text-sm">Para poder prosseguir com o pagamento é necessário uma solicitação mínima de 30 camisas.</p>
+                                        <p className="text-sm">Para poder prosseguir com o pagamento é necessário uma solicitação mínima de 60 camisas.</p>
                                         <p className="text-xs text-red-600 mt-1">Solicitações feitas: {countSolic}</p>
                                     </div>
                                 </div>
                             }
                             {
-                                (countSolic && countSolic >= 30) &&
+                                (countSolic && countSolic >= 60) &&
                                 (
                                     !paid.paid
                                     ?
