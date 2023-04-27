@@ -4,57 +4,70 @@ import { ShirtProps } from "../pages/Cadastro";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 
-// Colors Preview
-    // model Código
-        import camisa_codigo_preta from "../assets/camisa_codigo_preta.png";
-        import camisa_codigo_preta_verso from "../assets/camisa_codigo_preta_verso.png";
+import classica_preta from "../assets/classica/preta.png";
+import classica_branca from "../assets/classica/branca.png";
+import classica_verde from "../assets/classica/verde.png";
+import classica_azul from "../assets/classica/azul.png";
+import classica_vinho from "../assets/classica/vinho.png";
+import alternativa_preta from "../assets/alternativa/preta.png";
+import alternativa_branca from "../assets/alternativa/branca.png";
+import alternativa_verde from "../assets/alternativa/azul.png";
+import alternativa_azul from "../assets/alternativa/verde.png";
+import alternativa_vinho from "../assets/alternativa/vinho.png";
+import alternativa_preta_verso from "../assets/alternativa/preta_verso.png";
+import alternativa_branca_verso from "../assets/alternativa/branca_verso.png";
+import alternativa_verde_verso from "../assets/alternativa/verde_verso.png";
+import alternativa_azul_verso from "../assets/alternativa/azul_verso.png";
+import alternativa_vinho_verso from "../assets/alternativa/vinho_verso.png";
 
-        import camisa_codigo_branca from "../assets/camisa_codigo_branca.png";
-        import camisa_codigo_branca_verso from "../assets/camisa_codigo_branca_verso.png";
+export interface Color {
+    color: string;
+    bg: string;
+    classica: string;
+    alternativa: string;
+    alternativaVerse: string;
+    verse: boolean;
+};
 
-        import camisa_codigo_vermelha from "../assets/camisa_codigo_vermelha.png";
-        import camisa_codigo_vermelha_verso from "../assets/camisa_codigo_vermelha_verso.png";
-
-        import camisa_codigo_azul from "../assets/camisa_codigo_azul.png";
-        import camisa_codigo_azul_verso from "../assets/camisa_codigo_azul_verso.png";
-
-        import camisa_codigo_verde from "../assets/camisa_codigo_verde.png";
-        import camisa_codigo_verde_verso from "../assets/camisa_codigo_verde_verso.png";
-
-export const colors = [
+export const colors: Array<Color> = [
     {
-        color: "Preto",
+        color: "preta",
         bg: "bg-black",
-        preview: camisa_codigo_preta,
-        previewVerse: camisa_codigo_preta_verso,
+        classica: classica_preta,
+        alternativa: alternativa_preta,
+        alternativaVerse: alternativa_preta_verso,
         verse: false,
     },
     {
-        color: "Branco",
+        color: "branca",
         bg: "bg-white",
-        preview: camisa_codigo_branca,
-        previewVerse: camisa_codigo_branca_verso,
+        classica: classica_branca,
+        alternativa: alternativa_branca,
+        alternativaVerse: alternativa_branca_verso,
         verse: false,
     },
     {
-        color: "Vinho",
+        color: "vinho",
         bg: "bg-red-600",
-        preview: camisa_codigo_vermelha,
-        previewVerse: camisa_codigo_vermelha_verso,
+        classica: classica_vinho,
+        alternativa: alternativa_vinho,
+        alternativaVerse: alternativa_vinho_verso,
         verse: false,
     },
     {
-        color: "Verde",
+        color: "verde",
         bg: "bg-green-600",
-        preview: camisa_codigo_verde,
-        previewVerse: camisa_codigo_verde_verso,
+        classica: classica_verde,
+        alternativa: alternativa_verde,
+        alternativaVerse: alternativa_verde_verso,
         verse: false,
     },
     {
-        color: "Azul",
+        color: "azul",
         bg: "bg-blue-600",
-        preview: camisa_codigo_azul,
-        previewVerse: camisa_codigo_azul_verso,
+        classica: classica_azul,
+        alternativa: alternativa_azul,
+        alternativaVerse: alternativa_azul_verso,
         verse: false,
     },
 ];
@@ -88,33 +101,58 @@ export function Shirts({ customShirts, setCustomShirts, quantidade }: ShirtsProp
                         !customShirt.cor
                         ?
                             <div className="bg-zinc-700 w-[17rem] h-full rounded-md flex items-center justify-center">
-                                <p className="text-white text-lg w-3/4 text-center">Escolha uma cor para pré-visualização...</p>
+                                <p className="text-white text-base w-3/4 text-center">Personalize para<br />pré-visualização...</p>
                             </div>
                         :
                             
                             <div
                                 onClick={() => {
-                                    const updateCustomShirts = [...customShirts];
-                                    const updateCustomShirt = { ...customShirt };
-                                    if (updateCustomShirt.cor) {    
-                                        if (updateCustomShirt.cor.verse) {
-                                            updateCustomShirt.cor.verse = false;
-                                            updateCustomShirts.splice(i, 1, updateCustomShirt);
-                                        } else {
-                                            updateCustomShirt.cor.verse = true;
-                                            updateCustomShirts.splice(i, 1, updateCustomShirt);
+                                    if (customShirt.modelo === "alternativa") {
+                                        const updateCustomShirts = [...customShirts];
+                                        const updateCustomShirt = { ...customShirt };
+                                        if (updateCustomShirt.cor) {    
+                                            if (updateCustomShirt.cor.verse) {
+                                                updateCustomShirt.cor.verse = false;
+                                                updateCustomShirts.splice(i, 1, updateCustomShirt);
+                                            } else {
+                                                updateCustomShirt.cor.verse = true;
+                                                updateCustomShirts.splice(i, 1, updateCustomShirt);
+                                            }
                                         }
+                                        setCustomShirts(updateCustomShirts);
                                     }
-                                    setCustomShirts(updateCustomShirts);
                                 }}
                                 className="bg-zinc-700 w-full h-full rounded-md cursor-pointer flex items-end"
                                 style={{
-                                    backgroundImage: `url(${customShirt.cor.verse ? customShirt.cor.previewVerse : customShirt.cor.preview})`,
+                                    backgroundImage: `url(${customShirt.cor.verse ? customShirt.cor.alternativaVerse : customShirt.cor[customShirt.modelo]})`,
                                     backgroundSize: "cover",
                                     backgroundPosition: "center",
                                 }}
-                            ><p className="w-full bg-violet-600 text-white text-sm p-2 text-center">Clique para ver {customShirt.cor.verse ? "a frente" : "o verso"}...</p></div>       
+                            >
+                                {customShirt.modelo === "alternativa" && <p className="w-full bg-violet-600 text-white text-sm p-2 text-center">Clique para ver {customShirt.cor.verse ? "a frente" : "o verso"}...</p>}
+                            </div>       
                         }
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <p className="text-white font-black text-md">Modelo</p>
+                        <ToggleGroup.Root
+                            type="single"
+                            aria-label="Modelo"
+                            className="flex justify-between gap-5"
+                            value={customShirt.modelo}
+                            onValueChange={(modelo: "classica" | "alternativa") => {
+                                const updateCustomShirt = [...customShirts];
+                                updateCustomShirt.splice(i, 1, { ...customShirt, modelo });
+                                setCustomShirts(updateCustomShirt);
+                            }}
+                        >
+                            <ToggleGroup.Item className="bg-zinc-700 w-1/2 py-2 rounded-md flex items-center justify-center data-[state=on]:bg-violet-600 transition-colors" value="classica" aria-label="classica">
+                                <span className="font-black text-white">Clássica</span>
+                            </ToggleGroup.Item>
+                            <ToggleGroup.Item className="bg-zinc-700 w-1/2 py-2 rounded-md flex items-center justify-center data-[state=on]:bg-violet-600 transition-colors" value="alternativa" aria-label="alternativa">
+                                <span className="font-black text-white">Alternativa</span>
+                            </ToggleGroup.Item>
+                        </ToggleGroup.Root>
                     </div>
                     <div className="flex flex-col gap-2">
                         <p className="text-white font-black text-md">Tamanho</p>
@@ -143,23 +181,26 @@ export function Shirts({ customShirts, setCustomShirts, quantidade }: ShirtsProp
                             </ToggleGroup.Item>
                         </ToggleGroup.Root>
                     </div>
-                    <ToggleGroup.Root
-                        type="single"
-                        aria-label="Cor"
-                        className="grid grid-flow-col grid-rows-2 gap-3"
-                        value={JSON.stringify(customShirt.cor)}
-                        onValueChange={cor => {
-                            const updateCustomShirt = [...customShirts];
-                            updateCustomShirt.splice(i, 1, { ...customShirt, cor: JSON.parse(cor) });
-                            setCustomShirts(updateCustomShirt);
-                        }}
-                    >
-                        {colors.map(color => {
-                            return (
-                                <ItemColor key={color.bg} color={color} selectedColor={customShirt.cor?.color} />
-                            );
-                        })}
-                    </ToggleGroup.Root>
+                    <div className="flex flex-col gap-2">
+                        <p className="text-white font-black text-md">Cor</p>
+                        <ToggleGroup.Root
+                            type="single"
+                            aria-label="Cor"
+                            className="grid grid-flow-col grid-rows-2 gap-3"
+                            value={JSON.stringify(customShirt.cor)}
+                            onValueChange={cor => {
+                                const updateCustomShirt = [...customShirts];
+                                updateCustomShirt.splice(i, 1, { ...customShirt, cor: JSON.parse(cor) });
+                                setCustomShirts(updateCustomShirt);
+                            }}
+                        >
+                            {colors.map(color => {
+                                return (
+                                    <ItemColor key={color.bg} color={color} selectedColor={customShirt.cor?.color} />
+                                );
+                            })}
+                        </ToggleGroup.Root>
+                    </div>
                 </div>
             ))}
         </div>

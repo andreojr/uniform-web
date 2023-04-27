@@ -1,6 +1,6 @@
 import { ArrowFatRight } from "@phosphor-icons/react";
 import logo from "../assets/UniForm.svg";
-import { Shirts } from "../components/Shirts";
+import { Color, Shirts } from "../components/Shirts";
 import { Input } from "../components/Input";
 import * as ToggleGroup from '@radix-ui/react-toggle-group';
 import * as ScrollArea from '@radix-ui/react-scroll-area';
@@ -23,21 +23,16 @@ const defaultUserData = {
 };
 
 export interface ShirtProps {
+    modelo: "classica" | "alternativa";
     tamanho: string;
-    cor: {
-        color: string;
-        bg: string;
-        preview: string;
-        previewVerse: string;
-        verse: boolean;
-    } | null;
+    cor: Color | null;
 }
 
 export const precoUnitario = 27;
 
 export function Cadastro({ userExists = false }: { userExists?: boolean; }) {
     const [userData, setUserData] = useState<UserDataProps>(defaultUserData);
-    const [customShirts, setCustomShirts] = useState<Array<ShirtProps>>([{cor:null,tamanho:""}]);
+    const [customShirts, setCustomShirts] = useState<Array<ShirtProps>>([{cor:null,tamanho:"",modelo:"classica"}]);
     const [error, setError] = useState(false);
     const navigate = useNavigate();
     const { matricula } = useParams();
@@ -55,10 +50,10 @@ export function Cadastro({ userExists = false }: { userExists?: boolean; }) {
 
             const { nome, matricula, curso } = userData;
             
-            const shirts: {tamanho: string; cor: string}[] = [];
+            const shirts: {modelo: "classica" | "alternativa"; tamanho: string; cor: string}[] = [];
             customShirts.forEach(shirt => {
                 if (shirt.cor)
-                    shirts.push({tamanho: shirt.tamanho, cor: shirt.cor.color});
+                    shirts.push({modelo: shirt.modelo, tamanho: shirt.tamanho, cor: shirt.cor.color});
             });
 
             if (shirts.length !== userData.quantidade) {
