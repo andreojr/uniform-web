@@ -16,7 +16,7 @@ export function Login() {
     async function handleLogin(e: React.MouseEvent) {
         e.preventDefault();
         try {
-            const response = await api.get(`/login/${matricula}`);
+            const response = await api.get(`/login/${matricula.replaceAll(" ", "").replaceAll("(", "").replaceAll(")", "").replaceAll("-", "")}`);
             signIn(response.data);
             setError(false);
             navigate("/");
