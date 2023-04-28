@@ -43,6 +43,7 @@ export function AdmPay() {
             setPass("");
             setPassVerify(true);
             setLoading(false);
+            setError(false);
         } catch(e) {
             setError(true);
         }
@@ -90,7 +91,7 @@ export function AdmPay() {
                     </ScrollArea.Scrollbar>
                     <ScrollArea.Corner />
                 </ScrollArea.Root>
-            ) : (loading ? 
+            ) : ((loading && !error) ? 
                 <div className="flex items-center justify-center h-full"><CircleNotch size={32} className="animate-spin text-white" /></div>
                 :
                 <form className="flex flex-col justify-center h-full gap-5">

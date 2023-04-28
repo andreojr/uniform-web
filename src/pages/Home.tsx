@@ -2,12 +2,12 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import logo from "../assets/UniForm.svg";
-import { Check, CircleNotch, CurrencyDollar, Eye, Info, Plus, Trash, WhatsappLogo } from "@phosphor-icons/react";
+import { Check, CircleNotch, CurrencyDollar, Eye, Info, Plus, SignOut, Trash, WhatsappLogo } from "@phosphor-icons/react";
 import { api } from "../lib/api";
 import { colors } from "../components/Shirts";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
 
-interface Solic {
+export interface Solic {
     id: string;
     cor: string;
     tamanho: string;
@@ -21,12 +21,16 @@ export function handleShowName(name: string) {
 }
 
 export function Home() {
-    const { signed, user } = useContext(AuthContext);
+    const { signed, user, setUser } = useContext(AuthContext);
     const [countSolic, setCountSolic] = useState<number | null>(null);
-    const [paid, setPaid] = useState({ loading: true, paid: false });
     const [mySolic, setMySolic] = useState<Array<Solic> | null>(null);
 
+    const [etapaAtual, setEtapaAtual] = useState<number | null>(null);
+
     useEffect(() => {
+        api.get("/etapa-atual").then(response => {
+            setEtapaAtual(response.data);
+        });
         handleCountSolic();
     }, []);
 
@@ -34,29 +38,18 @@ export function Home() {
         handleSetMySolics();
     }, [user]);
 
-    useEffect(() => {
-        if (mySolic) {
-            console.log(mySolic);
-            let paid = true;
-            mySolic.forEach(solic => {
-                if (!solic.pay) paid = false;
-            });
-            setPaid({ loading: false, paid });
-        }
-    }, [mySolic]);
-
-    function handleCountSolic() {
-        api.get("/requests/count").then(response => {
-            setCountSolic(response.data);
-        });
-    }
-
     function handleSetMySolics() {
         if (user) {
             api.get(`/requests/${user.id}`).then(response => {
                 setMySolic(response.data.results);
             });
         }
+    }
+
+    function handleCountSolic() {
+        api.get("/requests/count").then(response => {
+            setCountSolic(response.data);
+        });
     }
 
     async function handleDeleteSolic(id: string) {
@@ -69,10 +62,10 @@ export function Home() {
         }
     }
 
-    return signed && user ? (
+    return (signed && user && etapaAtual) ? (
         <div className="flex flex-col text-white gap-10 py-12 justify-center items-center">
             {
-                (mySolic && !paid.loading) ?
+                (mySolic) ?
                     (
                         <>
                             <div className="flex flex-col">
@@ -114,7 +107,7 @@ export function Home() {
                                                     <div key={shirt.id} className="relative flex flex-col items-center bg-zinc-700 rounded-md p-2">
                                                         <img src={preview} alt="Preview" className="h-32" />
                                                         <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-zinc-700/70 p-2 rounded-md font-black text-sm">{shirt.tamanho}</p>
-                                                        <Trash onClick={() => handleDeleteSolic(shirt.id)} size={24} className="text-red-400 cursor-pointer" />
+                                                        {etapaAtual === 1 && <Trash onClick={() => handleDeleteSolic(shirt.id)} size={24} className="text-red-400 cursor-pointer" />}
                                                     </div>
 
                                                 );
@@ -131,17 +124,24 @@ export function Home() {
                                 </ScrollArea.Root>
 
 
-                                <div className="flex flex-col gap-5">
-                                    <button className="w-full bg-violet-600 rounded-md flex items-center justify-center py-2 hover:bg-violet-500 transition-colors">
-                                        <Link to="/visao-geral"><span className="text-white text-lg transition-all font-bold flex gap-2 items-center"><Eye size={24} />Visão geral</span></Link>
-                                    </button>
-                                    {
-                                        user.matricula === "223116037" &&
-                                        <button className="w-full bg-white text-violet-600 rounded-md flex items-center justify-center py-2 hover:text-violet-500 transition-colors">
-                                            <Link to="/adm-pay"><span className="text-lg transition-all font-bold flex gap-2 items-center"><CurrencyDollar size={24} />Pagamentos</span></Link>
+                                {etapaAtual < 3 ? (
+                                    <div className="flex flex-col gap-5">
+                                        <button className="w-full bg-violet-600 rounded-md flex items-center justify-center py-2 hover:bg-violet-500 transition-colors">
+                                            <Link to="/visao-geral"><span className="text-white text-lg transition-all font-bold flex gap-2 items-center"><Eye size={24} />Visão geral</span></Link>
                                         </button>
-                                    }
-                                </div>
+                                        {
+                                            user.matricula === "223116037" &&
+                                            <button className="w-full bg-white text-violet-600 rounded-md flex items-center justify-center py-2 hover:text-violet-500 transition-colors">
+                                                <Link to="/adm-pay"><span className="text-lg transition-all font-bold flex gap-2 items-center"><CurrencyDollar size={24} />Pagamentos</span></Link>
+                                            </button>
+                                        }
+                                    </div>
+                                ) : (
+                                    <button onClick={() => setUser(null)} className="bg-red-500 rounded-md flex items-center justify-center gap-1 py-2">
+                                        <p>Sair</p>
+                                        <SignOut size={24} />
+                                    </button>
+                                )}
 
                                 { }
 
@@ -163,19 +163,31 @@ export function Home() {
                     </div>
             }
         </div>
-    ) : (
+    ) : etapaAtual ? (
         <div className="py-20 flex flex-col items-center font-black">
             <div className="flex flex-col">
                 <img src={logo} alt="UniForm" className="h-7" />
             </div>
             <div className="flex flex-col justify-center gap-5 h-full">
-                <button className="w-52 bg-violet-600 rounded-md flex items-center justify-center py-2 transition-colors hover:bg-violet-500">
-                    <Link to="/cadastro"><span className="text-white text-lg">Adicionar pedidos</span></Link>
-                </button>
+                {etapaAtual === 1 && (
+                    <button className="w-52 bg-violet-600 rounded-md flex items-center justify-center py-2 transition-colors hover:bg-violet-500">
+                        <Link to="/cadastro"><span className="text-white text-lg">Adicionar pedidos</span></Link>
+                    </button>
+                )}
                 <button className="w-52 bg-white rounded-md flex items-center justify-center py-2 group">
-                    <Link to="/login"><span className="text-violet-600 text-lg group-hover:text-violet-500 transition-all">Meus pedidos</span></Link>
+                    <Link to="/login"><span className="text-violet-600 text-lg group-hover:text-violet-500 transition-all">Minhas solicitações</span></Link>
                 </button>
+                {etapaAtual === 2 && (
+                    <button className="w-52 bg-violet-600 rounded-md flex items-center justify-center py-2 transition-colors hover:bg-violet-500">
+                        <Link to="/requests"><span className="text-white text-lg">Ver Pedido</span></Link>
+                    </button>
+                )}
+                {etapaAtual >= 3 && (
+                    <button className="w-52 bg-violet-600 rounded-md flex items-center justify-center py-2 transition-colors hover:bg-violet-500">
+                        <Link to="/visao-geral"><span className="text-white text-lg">Visão Geral</span></Link>
+                    </button>
+                )}
             </div>
         </div>
-    );
+    ) : <div className="flex items-center justify-center"><CircleNotch size={32} className="text-white animate-spin" /></div>;
 }

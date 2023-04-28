@@ -2,14 +2,44 @@ import * as ScrollArea from "@radix-ui/react-scroll-area";
 import logo from "../assets/UniForm.svg";
 import { Link } from "react-router-dom";
 import clsx from "clsx";
-import { ArrowSquareOut, Check, DotsThree, WhatsappLogo } from "@phosphor-icons/react";
-import { useContext } from "react";
+import { ArrowSquareOut, Check, CheckCircle, Circle, CircleNotch, DotsThree, Info, Truck, WhatsappLogo } from "@phosphor-icons/react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
+import { Solic } from "./Home";
+import { api } from "../lib/api";
 
 export function VisaoGeral() {
     const {user} = useContext(AuthContext);
 
-    const etapaAtual = 1;
+    const [paid, setPaid] = useState<boolean | null>(null);
+    const [mySolic, setMySolic] = useState<Array<Solic> | null>(null);
+    const [etapaAtual, setEtapaAtual] = useState<number | null>(null);
+
+    useEffect(() => {
+        api.get("/etapa-atual").then(response => {
+            setEtapaAtual(response.data);
+        });
+        handleSetMySolics();
+    }, []);
+
+    function handleSetMySolics() {
+        if (user) {
+            api.get(`/requests/${user.id}`).then(response => {
+                setMySolic(response.data.results);
+            });
+        }
+    }
+
+    useEffect(() => {
+        if (mySolic) {
+            console.log(mySolic);
+            let paid = true;
+            mySolic.forEach(solic => {
+                if (!solic.pay) paid = false;
+            });
+            setPaid(paid);
+        }
+    }, [mySolic]);
 
     const etapas = [
         {
@@ -19,6 +49,7 @@ export function VisaoGeral() {
         {
             nome: "Pagamento",
             link: `/pay/${user?.id}`,
+            descricao: paid ? <p className="flex gap-1 items-start leading-tight text-green-500"><CheckCircle size={16} className="mt-0.5" weight="fill"/> Seu pagamento<br />foi aprovado!</p> : <p className="text-red-500 flex items-center gap-1"><Info size={16} /> Efetue o pagamento.</p>
         },
         {
             nome: "Pedido",
@@ -26,7 +57,7 @@ export function VisaoGeral() {
         },
         {
             nome: "Entrega",
-            descricao: "O pedido chegará até 08 de Abril"
+            descricao: <div className="leading-tight flex flex-col gap-1 text-yellow-600"><span>O pedido chegará<br />até <span className="font-bold text-white">17/05</span></span><span className="flex items-end animate-bounce">...<Truck size={24} />...</span></div>
         },
         {
             nome: "Distribuição",
@@ -41,7 +72,7 @@ export function VisaoGeral() {
         }
     ];
 
-    return (
+    return etapaAtual ? (
         <ScrollArea.Root className="!static w-full h-full overflow-hidden flex justify-center">
             <ScrollArea.Viewport className="w-full h-full pb-16 visao-geral">
                 <div className="flex flex-col gap-16 pt-12">
@@ -69,7 +100,7 @@ export function VisaoGeral() {
                                                 <span className="text-white text-sm">{etapa.descricao}</span>
                                             )}
                                         </div>
-                                        {(etapaAtual === i+1 && etapa.link) && (
+                                        {(etapaAtual === i+1 && etapa.link && (etapaAtual !== 2 || !paid)) && (
                                             <Link to={etapa.link}>
                                                 <ArrowSquareOut size={24} className="text-violet-600" />
                                             </Link>
@@ -78,6 +109,8 @@ export function VisaoGeral() {
                                     {i+1 !== etapas.length && <div className={clsx("absolute w-1 left-3.5 h-8 top-[1.75rem] rounded-full", {
                                         "bg-zinc-700": etapaAtual <= i+1,
                                         "bg-green-500": etapaAtual > i+1,
+                                        "h-[3rem]": etapaAtual === 2,
+                                        "h-[5.5rem] top-[2rem]": etapaAtual === 4 || etapaAtual === 5,
                                     })} />}
                                 </div>
                             );
@@ -93,5 +126,5 @@ export function VisaoGeral() {
             </ScrollArea.Scrollbar>
             <ScrollArea.Corner />
         </ScrollArea.Root>
-    );
+    ) : <div className="flex items-center justify-center"><CircleNotch className="text-white animate-spin" size={32} /></div>;
 }

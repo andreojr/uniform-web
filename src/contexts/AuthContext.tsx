@@ -3,6 +3,7 @@ import { createContext, useState } from "react";
 interface AuthContextProps {
     signed: boolean;
     user: User | null;
+    setUser: React.Dispatch<React.SetStateAction<User | null>>;
     signIn: (userData: User) => Promise<void>;
 }
 
@@ -29,7 +30,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     };
 
     return (
-        <AuthContext.Provider value={{ signed, user, signIn }}>
+        <AuthContext.Provider value={{ signed, user, setUser, signIn }}>
             {children}
         </AuthContext.Provider>
     );
