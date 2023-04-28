@@ -7,6 +7,7 @@ import { Home } from "./pages/Home";
 import { Pay } from "./pages/Pay";
 import { Requests } from "./pages/Requests";
 import { VisaoGeral } from "./pages/VisaoGeral";
+import { AdmPay } from "./pages/AdmPay";
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/requests" element={<Requests />} />
             <Route path="/visao-geral" element={<VisaoGeral />} />
+            <Route path="/adm-pay" element={<AdmPay />} />
             <Route path="/cadastro/:matricula" element={<Cadastro userExists />} />
             <Route path="/pay/:user_id" element={<Pay />} />
           </Routes>

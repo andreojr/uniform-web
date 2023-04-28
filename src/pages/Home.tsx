@@ -21,7 +21,7 @@ export function handleShowName(name: string) {
 }
 
 export function Home() {
-    const {signed, user} = useContext(AuthContext);
+    const { signed, user } = useContext(AuthContext);
     const [countSolic, setCountSolic] = useState<number | null>(null);
     const [paid, setPaid] = useState({ loading: true, paid: false });
     const [mySolic, setMySolic] = useState<Array<Solic> | null>(null);
@@ -64,7 +64,7 @@ export function Home() {
             await api.delete(`/requests/${id}`);
             handleSetMySolics();
             handleCountSolic();
-        } catch(err) {
+        } catch (err) {
             console.log(err);
         }
     }
@@ -73,93 +73,94 @@ export function Home() {
         <div className="flex flex-col text-white gap-10 py-12 justify-center items-center">
             {
                 (mySolic && !paid.loading) ?
-                (
-                    <>
-                        <div className="flex flex-col">
-                            <img src={logo} alt="UniForm" className="h-7" />
-                        </div>
-                        <div className="flex flex-col gap-10 h-full justify-center">
-                            <div className="flex flex-col items-center">
-                                <p className="font-black text-xl">Olá, {handleShowName(user.nome)}!</p>
-                                {mySolic.length > 0 && (
-                                    <p className="text-sm">
-                                        Você já enviou sua solicitação.
-                                    </p>
-                                )}
-                                {mySolic.length === 0 && (
-                                    <p className="text-sm">Você não possui nenhuma solicitação. <Link className="text-violet-500" to="/cadastro">Envie agora</Link>.</p>
-                                )}
+                    (
+                        <>
+                            <div className="flex flex-col">
+                                <img src={logo} alt="UniForm" className="h-7" />
                             </div>
-
-                            {(mySolic.length > 0) && (
-                                <div className="w-full flex justify-between items-center">
-                                    <h4 className="font-black text-xl">Solicitações</h4>
-                                    <Link to={`/cadastro/${user.matricula}`}>
-                                        <Plus size={24} />
-                                    </Link>
+                            <div className="flex flex-col gap-10 h-full justify-center">
+                                <div className="flex flex-col items-center">
+                                    <p className="font-black text-xl">Olá, {handleShowName(user.nome)}!</p>
+                                    {mySolic.length > 0 && (
+                                        <p className="text-sm">
+                                            Você já enviou sua solicitação.
+                                        </p>
+                                    )}
+                                    {mySolic.length === 0 && (
+                                        <p className="text-sm">Você não possui nenhuma solicitação. <Link className="text-violet-500" to="/cadastro">Envie agora</Link>.</p>
+                                    )}
                                 </div>
-                            )}
-                                
-                                    <ScrollArea.Root className="!static w-full h-[15rem] overflow-hidden flex justify-center">
-                                        <ScrollArea.Viewport className="w-full h-full">
-                                            <div className="grid grid-cols-2 grid-flow-row w-full gap-10">
-                                                {(mySolic.length > 0) && mySolic.map(shirt => {
 
-                                                    let preview;
-                                                    colors.forEach(color => {
-                                                        if (shirt.cor === color.color) preview = color[shirt.modelo];
-                                                    });
-                                                    
-                                                    return !!preview && (
-                                                        <div key={shirt.id} className="relative flex flex-col items-center bg-zinc-700 rounded-md p-2">
-                                                            <img src={preview} alt="Preview" className="h-32" />
-                                                            <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-zinc-700/70 p-2 rounded-md font-black text-sm">{shirt.tamanho}</p>
-                                                            <Trash onClick={() => handleDeleteSolic(shirt.id)} size={24} className="text-red-400 cursor-pointer" />
-                                                        </div>
-                                                                                        
-                                                    );
-                                                })}
-                                            </div>
-                                        </ScrollArea.Viewport>
-                                        <ScrollArea.Scrollbar orientation="vertical">
-                                            <ScrollArea.Thumb />
-                                        </ScrollArea.Scrollbar>
-                                        <ScrollArea.Scrollbar orientation="horizontal">
-                                            <ScrollArea.Thumb />
-                                        </ScrollArea.Scrollbar>
-                                        <ScrollArea.Corner />
-                                    </ScrollArea.Root>  
-
-                            {
-                                (countSolic && countSolic < 60) &&
-                                <div className="flex max-w-[21rem] text-yellow-600">
-                                    <Info weight="fill" className="text-2xl" />
-                                    <div className="flex flex-col text-justify ml-2 w-[18rem]">
-                                        <p className="text-sm">Para poder prosseguir com o pagamento é necessário uma solicitação mínima de 60 camisas.</p>
-                                        <p className="text-xs text-red-600 mt-1">Solicitações feitas: {countSolic}</p>
+                                {(mySolic.length > 0) && (
+                                    <div className="w-full flex justify-between items-center">
+                                        <h4 className="font-black text-xl">Solicitações</h4>
+                                        <Link to={`/cadastro/${user.matricula}`}>
+                                            <Plus size={24} />
+                                        </Link>
                                     </div>
-                                </div>
-                            }
-                            <button className="w-full bg-violet-600 rounded-md flex items-center justify-center py-2 hover:bg-violet-500 transition-colors">
-                                <Link to="/visao-geral"><span className="text-white text-lg transition-all font-bold flex gap-2 items-center"><Eye size={24} />Visão geral</span></Link>
-                            </button>
+                                )}
 
-                            <div className="flex flex-col gap-2 items-center justify-center">
-                                <p className="text-white text-base">Alguma dúvida?</p>
-                                <a target="__blank" href="https://wa.me/5571984760838" className="w-7/12 flex justify-center items-center gap-2 bg-white rounded-md py-2">
-                                    <WhatsappLogo size={24} className="text-green-500" weight="fill" />
-                                    <span className="text-green-500">Fale comigo!</span>
-                                </a>
+                                <ScrollArea.Root className="!static w-full h-[15rem] overflow-hidden flex justify-center">
+                                    <ScrollArea.Viewport className="w-full h-full">
+                                        <div className="grid grid-cols-2 grid-flow-row w-full gap-10">
+                                            {(mySolic.length > 0) && mySolic.map(shirt => {
+
+                                                let preview;
+                                                colors.forEach(color => {
+                                                    if (shirt.cor === color.color) preview = color[shirt.modelo];
+                                                });
+
+                                                return !!preview && (
+                                                    <div key={shirt.id} className="relative flex flex-col items-center bg-zinc-700 rounded-md p-2">
+                                                        <img src={preview} alt="Preview" className="h-32" />
+                                                        <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-zinc-700/70 p-2 rounded-md font-black text-sm">{shirt.tamanho}</p>
+                                                        <Trash onClick={() => handleDeleteSolic(shirt.id)} size={24} className="text-red-400 cursor-pointer" />
+                                                    </div>
+
+                                                );
+                                            })}
+                                        </div>
+                                    </ScrollArea.Viewport>
+                                    <ScrollArea.Scrollbar orientation="vertical">
+                                        <ScrollArea.Thumb />
+                                    </ScrollArea.Scrollbar>
+                                    <ScrollArea.Scrollbar orientation="horizontal">
+                                        <ScrollArea.Thumb />
+                                    </ScrollArea.Scrollbar>
+                                    <ScrollArea.Corner />
+                                </ScrollArea.Root>
+
+
+                                <div className="flex flex-col gap-5">
+                                    <button className="w-full bg-violet-600 rounded-md flex items-center justify-center py-2 hover:bg-violet-500 transition-colors">
+                                        <Link to="/visao-geral"><span className="text-white text-lg transition-all font-bold flex gap-2 items-center"><Eye size={24} />Visão geral</span></Link>
+                                    </button>
+                                    {
+                                        user.matricula === "223116037" &&
+                                        <button className="w-full bg-white text-violet-600 rounded-md flex items-center justify-center py-2 hover:text-violet-500 transition-colors">
+                                            <Link to="/adm-pay"><span className="text-lg transition-all font-bold flex gap-2 items-center"><CurrencyDollar size={24} />Pagamentos</span></Link>
+                                        </button>
+                                    }
+                                </div>
+
+                                { }
+
+                                <div className="flex flex-col gap-2 items-center justify-center">
+                                    <p className="text-white text-base">Alguma dúvida?</p>
+                                    <a target="__blank" href="https://wa.me/5571984760838" className="w-7/12 flex justify-center items-center gap-2 bg-white rounded-md py-2">
+                                        <WhatsappLogo size={24} className="text-green-500" weight="fill" />
+                                        <span className="text-green-500">Fale comigo!</span>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                    </>
-                )
-                :
-                <div className="flex justify-center items-center">
-                    <p className="text-white font-black text-lg">
-                        <CircleNotch size={32} className="text-white animate-spin" />
-                    </p>
-                </div>
+                        </>
+                    )
+                    :
+                    <div className="flex justify-center items-center">
+                        <p className="text-white font-black text-lg">
+                            <CircleNotch size={32} className="text-white animate-spin" />
+                        </p>
+                    </div>
             }
         </div>
     ) : (

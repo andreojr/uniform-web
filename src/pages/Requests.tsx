@@ -54,7 +54,7 @@ export function Requests() {
                     <div className="flex flex-col gap-10">
                         <div className="flex justify-between gap-8">
                             <div className="flex flex-col">
-                                <h1 className="text-white text-[1.75rem] font-black"><span className="text-violet-600">{requests.length}</span> Pedidos</h1>
+                                <h1 className="text-white"><span className="text-white font-black text-3xl">{cash/precoUnitario}</span><span className="text-zinc-400 font-normal text-lg">/{requests.length}</span> <span className="text-violet-600 font-black text-2xl">Pedidos</span></h1>
                                 <div className="text-white font-bold text-base flex items-end gap-1">
                                     <span className="text-green-500 text-base">R$ {cash}<span className="text-sm">,00</span></span>
                                     <span className="text-zinc-400 text-sm">/ R$ {requests.length * precoUnitario}<span className="text-xs">,00</span></span>
