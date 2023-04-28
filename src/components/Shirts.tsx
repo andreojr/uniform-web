@@ -130,7 +130,7 @@ export function Shirts({ customShirts, setCustomShirts, quantidade }: ShirtsProp
                         {
                         !customShirt.cor
                         ?
-                            <div className="bg-zinc-700 w-[15.5rem] h-full rounded-md flex items-center justify-center">
+                            <div className="bg-zinc-700 w-full h-full rounded-md flex items-center justify-center">
                                 <p className="text-white text-base w-3/4 text-center">Personalize para<br />pré-visualização...</p>
                             </div>
                         :
