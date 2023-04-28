@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import logo from "../assets/UniForm.svg";
-import { Check, CircleNotch, CurrencyDollar, Info, Plus, Trash, WhatsappLogo } from "@phosphor-icons/react";
+import { Check, CircleNotch, CurrencyDollar, Eye, Info, Plus, Trash, WhatsappLogo } from "@phosphor-icons/react";
 import { api } from "../lib/api";
 import { colors } from "../components/Shirts";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
@@ -140,22 +140,9 @@ export function Home() {
                                     </div>
                                 </div>
                             }
-                            {
-                                (countSolic && countSolic >= 60) &&
-                                (
-                                    !paid.paid
-                                    ?
-                                    <Link className="text-white bg-violet-600 flex items-center justify-center p-2 rounded-md gap-2" to={`/pay/${user.id}`}>
-                                        <CurrencyDollar size={24} />
-                                        <span>Pagar</span>
-                                    </Link>
-                                    :
-                                    <div className="text-white bg-green-500 flex items-center justify-center p-2 rounded-md gap-2">
-                                        <span>Pago!</span>
-                                        <Check size={24} />
-                                    </div>
-                                )
-                            }
+                            <button className="w-full bg-green-500 rounded-md flex items-center justify-center py-2 hover:bg-green-400 transition-colors">
+                                <Link to="/visao-geral"><span className="text-white text-lg transition-all font-bold flex gap-2 items-center"><Eye size={24} />Visão geral</span></Link>
+                            </button>
 
                             <div className="flex flex-col gap-2 items-center justify-center">
                                 <p className="text-white text-base">Alguma dúvida?</p>
@@ -185,7 +172,7 @@ export function Home() {
                     <Link to="/cadastro"><span className="text-white text-lg">Adicionar pedidos</span></Link>
                 </button>
                 <button className="w-52 bg-white rounded-md flex items-center justify-center py-2 group">
-                    <Link to="/login"><span className="text-violet-600 text-lg group-hover:text-violet-500 transition-all">Verificar status</span></Link>
+                    <Link to="/login"><span className="text-violet-600 text-lg group-hover:text-violet-500 transition-all">Meus pedidos</span></Link>
                 </button>
             </div>
         </div>

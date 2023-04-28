@@ -91,7 +91,7 @@ export function Pay() {
                     </div>
                     <div className="w-full flex justify-between text-xl gap-16 font-black">
                         <p className="text-white">Total:</p>
-                        <span className="text-green-500">{(value+frete).toFixed(2).replace(".", ",")}</span>
+                        <span className="text-green-500">R$ {(value+frete).toFixed(2).replace(".", ",")}</span>
                     </div>
                 </div>
                 <div className="flex max-w-[21rem] text-yellow-600">
