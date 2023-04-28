@@ -5,6 +5,7 @@ import { Login } from "./pages/Login";
 import { AuthProvider } from "./contexts/AuthContext";
 import { Home } from "./pages/Home";
 import { Pay } from "./pages/Pay";
+import { Requests } from "./pages/Requests";
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
             <Route path="/cadastro-finalizado" element={<CadastroFinalizado />} />
             <Route path="/login" element={<Login />} />
             <Route path="/pay/:user_id" element={<Pay />} />
+            <Route path="/requests" element={<Requests />} />
           </Routes>
         </AuthProvider>
       </Router>
