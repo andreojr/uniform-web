@@ -140,7 +140,7 @@ export function Home() {
                                     </div>
                                 </div>
                             }
-                            <button className="w-full bg-green-500 rounded-md flex items-center justify-center py-2 hover:bg-green-400 transition-colors">
+                            <button className="w-full bg-violet-600 rounded-md flex items-center justify-center py-2 hover:bg-violet-500 transition-colors">
                                 <Link to="/visao-geral"><span className="text-white text-lg transition-all font-bold flex gap-2 items-center"><Eye size={24} />Visão geral</span></Link>
                             </button>
 

@@ -42,7 +42,7 @@ export function Requests() {
 
     const modelos = ["classica", "alternativa"];
     const tamanhos = ["P", "M", "G", "GG"];
-    const cores = ["preta", "branca", "azul", "vinho", "verde", "azul_claro", "vermelha", "cinza"];
+    const cores = ["preta", "cinza", "branca", "verde", "azul", "azul_claro", "vermelha", "vinho"];
 
     return (requests && cash !== null) ? (
         <ScrollArea.Root className="!static w-full h-full overflow-hidden flex justify-center">
@@ -56,8 +56,8 @@ export function Requests() {
                             <div className="flex flex-col">
                                 <h1 className="text-white text-[1.75rem] font-black"><span className="text-violet-600">{requests.length}</span> Pedidos</h1>
                                 <div className="text-white font-bold text-base flex items-end gap-1">
-                                    <span className="text-green-500 text-base">R$ {cash}</span>
-                                    <span className="text-zinc-400 text-sm">/ R$ {requests.length * precoUnitario},00</span>
+                                    <span className="text-green-500 text-base">R$ {cash}<span className="text-sm">,00</span></span>
+                                    <span className="text-zinc-400 text-sm">/ R$ {requests.length * precoUnitario}<span className="text-xs">,00</span></span>
                                 </div>
                             </div>
                             <CircularProgressbar value={(cash / (requests.length * precoUnitario)) * 100} text={`${Math.round((cash / (requests.length * precoUnitario)) * 100)}%`} className="w-[4.5rem] h-[4.5rem] font-black" styles={buildStyles({
@@ -74,9 +74,9 @@ export function Requests() {
                                         <p className="text-white text-2xl font-black">{modelo === "classica" ? "Clássica" : "Alternativa"}</p>
                                         {tamanhos.map(tam => {
                                             return (
-                                                <div key={tam} className="w-full bg-zinc-700 rounded-md p-4 flex flex-col gap-2">
-                                                    <p className="text-white text-xl font-black">{tam}</p>
-                                                    <div className="grid grid-flow-row grid-cols-4 gap-2">
+                                                <div key={tam} className="w-full bg-zinc-700 rounded-md p-4 flex flex-col gap-5 justify-center items-center">
+                                                    <p className="text-white text-xl font-black bg-violet-600 w-full rounded-md text-center">{tam}</p>
+                                                    <div className="grid grid-flow-col grid-rows-2 gap-3">
                                                         {cores.map(cor => {
 
                                                             let bg;
@@ -91,7 +91,7 @@ export function Requests() {
                                                             });
 
                                                             return (
-                                                                <div key={cor} className={`w-8 h-8 rounded-full ${bg} flex items-center justify-center text-white`}>
+                                                                <div key={cor} className={`w-10 h-10 rounded-full ${bg} flex items-center justify-center text-white`}>
                                                                     <div className=""></div>
                                                                     <span className={clsx("font-bold", {
                                                                         "text-black": cor === "branca",
