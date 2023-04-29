@@ -36,11 +36,15 @@ export function Pay() {
                 setValue(response.data.count * precoUnitario);
             }
         });
-        api.get("/requests/count").then(response => {
-            const frete = freteTotal / response.data;
-            setFrete(frete);
-        });
     }, []);
+    useEffect(() => {
+        if (value) {
+            api.get("/requests/count").then(response => {
+                const frete = freteTotal / response.data;
+                setFrete(frete * (value / precoUnitario));
+            });
+        }
+    }, [value]);
 
     function handleCopyHash(str: string) {
         copy(str);
@@ -86,7 +90,7 @@ export function Pay() {
                         <span>R$ {value},00</span>
                     </div>
                     <div className="w-full flex justify-between text-xs text-zinc-400">
-                        <p>Frete:</p>
+                        <p>Frete: <span className="text-[0.6rem]">(R$ {(frete / (value / precoUnitario)).toFixed(2).replace(".", ",")} cada)</span></p>
                         <span>+ R$ {frete.toFixed(2).replace(".", ",")}</span>
                     </div>
                     <div className="w-full flex justify-between text-xl gap-16 font-black">
