@@ -71,10 +71,10 @@ export function Requests() {
                                 trailColor: '#3f3f46',
                             })} />
                         </div>
-                        <div className="w-full flex flex-col sm:flex-row gap-10">
+                        <div className="w-full flex gap-10">
                             {modelos.map(modelo => {
                                 return (
-                                    <div key={modelo} className="w-full sm:w-1/2 flex flex-col gap-5">
+                                    <div key={modelo} className="w-1/2 flex flex-col gap-5">
                                         <p className="text-white text-2xl font-black">{modelo === "classica" ? "Clássica" : "Alternativa"}</p>
                                         {tamanhos.map(tam => {
                                             let countTam = 0;
