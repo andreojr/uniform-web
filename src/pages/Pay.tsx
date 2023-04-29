@@ -98,12 +98,6 @@ export function Pay() {
                         <span className="text-green-500">R$ {(value+frete).toFixed(2).replace(".", ",")}</span>
                     </div>
                 </div>
-                <div className="flex max-w-[21rem] text-yellow-600">
-                    <Info weight="fill" className="text-2xl" />
-                    <div className="flex flex-col text-justify ml-1 w-[11rem] -m-0.5">
-                        <p className="text-xs">Por conta da falta de aviso prévio, o valor do frete é opcional.</p>
-                    </div>
-                </div>
                 <div className="flex flex-col gap-2">
                     <p className="text-white text-sm">Já efetuou o pagamento?</p>
                     <a target="__blank" href="https://wa.me/5571984760838?text=Ol%C3%A1%2C+Andr%C3%A9%21+J%C3%A1+fiz+o+pagamento+do+UniForm." className="flex justify-center items-center gap-2 bg-white rounded-md py-2">
