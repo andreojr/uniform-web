@@ -77,33 +77,37 @@ export function Requests() {
                                     <div key={modelo} className="w-full sm:w-1/2 flex flex-col gap-5">
                                         <p className="text-white text-2xl font-black">{modelo === "classica" ? "Clássica" : "Alternativa"}</p>
                                         {tamanhos.map(tam => {
+                                            let countTam = 0;
                                             return (
-                                                <div key={tam} className="w-full bg-zinc-700 rounded-md p-4 flex flex-col gap-5 justify-center items-center">
-                                                    <p className="text-white text-xl font-black bg-violet-600 w-full rounded-md text-center">{tam}</p>
-                                                    <div className="grid grid-flow-col grid-rows-2 gap-3">
-                                                        {cores.map(cor => {
+                                                <div key={tam} className="w-[9.25rem] bg-zinc-700 rounded-md flex flex-col gap-1">
+                                                    <div className="order-2 w-full p-2">
+                                                        <div className="grid grid-flow-row grid-cols-3 gap-2">
+                                                            {cores.map(cor => {
+                                                                let bg;
+                                                                let count = 0;
+                                                                colors.forEach(color => {
+                                                                    if (color.color === cor) bg = color.bg;
+                                                                });
 
-                                                            let bg;
-                                                            let count = 0;
-                                                            colors.forEach(color => {
-                                                                if (color.color === cor) bg = color.bg;
-                                                            });
+                                                                requests.forEach(request => {
+                                                                    console.log(request);
+                                                                    if (request.modelo === modelo && request.tamanho === tam && request.cor === cor) count++;
+                                                                });
 
-                                                            requests.forEach(request => {
-                                                                console.log(request);
-                                                                if (request.modelo === modelo && request.tamanho === tam && request.cor === cor) count++;
-                                                            });
+                                                                countTam = countTam + count;
 
-                                                            return (
-                                                                <div key={cor} className={`w-10 h-10 rounded-full ${bg} flex items-center justify-center text-white`}>
-                                                                    <div className=""></div>
-                                                                    <span className={clsx("font-bold", {
-                                                                        "text-black": cor === "branca",
-                                                                    })}>{count}</span>
-                                                                </div>
-                                                            );
-                                                        })}
+                                                                return count > 0 && (
+                                                                    <div key={cor} className={`w-10 h-10 rounded-full ${bg} flex items-center justify-center text-white`}>
+                                                                        <div className=""></div>
+                                                                        <span className={clsx("font-bold", {
+                                                                            "text-black": cor === "branca",
+                                                                        })}>{count}</span>
+                                                                    </div>
+                                                                );
+                                                            })}
+                                                        </div>
                                                     </div>
+                                                    <p className="order-1 text-white text-xl font-black bg-violet-600 w-full rounded-md text-center">{tam} <span className="text-sm">[{countTam}]</span></p>
                                                 </div>
                                             );
                                         })}
