@@ -49,7 +49,7 @@ export function VisaoGeral() {
         {
             nome: "Pagamento",
             link: `/pay/${user?.id}`,
-            descricao: paid ? <p className="flex gap-1 items-start leading-tight text-green-500"><CheckCircle size={16} className="mt-0.5" weight="fill"/> Seu pagamento<br />foi aprovado!</p> : <p className="text-red-500 flex items-center gap-1"><Info size={16} /> Efetue o pagamento.</p>
+            descricao: paid ? <p className="flex gap-1 items-start leading-tight text-green-500"><CheckCircle size={16} className="mt-0.5" weight="fill"/> Seu pagamento foi aprovado!</p> : <p className="text-red-500 flex items-center gap-1"><Info size={16} /> Efetue o pagamento.</p>
         },
         {
             nome: "Pedido",
