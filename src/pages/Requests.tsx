@@ -71,46 +71,48 @@ export function Requests() {
                                 trailColor: '#3f3f46',
                             })} />
                         </div>
-                        <div className="w-full flex gap-10">
+                        <div className="w-full flex flex-col gap-10">
                             {modelos.map(modelo => {
                                 return (
-                                    <div key={modelo} className="w-1/2 flex flex-col gap-5">
+                                    <div key={modelo} className="flex flex-col gap-5">
                                         <p className="text-white text-2xl font-black">{modelo === "classica" ? "Clássica" : "Alternativa"}</p>
-                                        {tamanhos.map(tam => {
-                                            let countTam = 0;
-                                            return (
-                                                <div key={tam} className="w-[9.25rem] bg-zinc-700 rounded-md flex flex-col gap-1">
-                                                    <div className="order-2 w-full p-2">
-                                                        <div className="grid grid-flow-row grid-cols-3 gap-2">
-                                                            {cores.map(cor => {
-                                                                let bg;
-                                                                let count = 0;
-                                                                colors.forEach(color => {
-                                                                    if (color.color === cor) bg = color.bg;
-                                                                });
+                                        <div className="flex flex-wrap w-[20rem] gap-6">
+                                            {tamanhos.map(tam => {
+                                                let countTam = 0;
+                                                return (
+                                                    <div key={tam} className="w-[9.25rem] bg-zinc-700 rounded-md flex flex-col gap-1">
+                                                        <div className="order-2 w-full p-2">
+                                                            <div className="grid grid-flow-row grid-cols-3 gap-2">
+                                                                {cores.map(cor => {
+                                                                    let bg;
+                                                                    let count = 0;
+                                                                    colors.forEach(color => {
+                                                                        if (color.color === cor) bg = color.bg;
+                                                                    });
 
-                                                                requests.forEach(request => {
-                                                                    console.log(request);
-                                                                    if (request.modelo === modelo && request.tamanho === tam && request.cor === cor) count++;
-                                                                });
+                                                                    requests.forEach(request => {
+                                                                        console.log(request);
+                                                                        if (request.modelo === modelo && request.tamanho === tam && request.cor === cor) count++;
+                                                                    });
 
-                                                                countTam = countTam + count;
+                                                                    countTam = countTam + count;
 
-                                                                return count > 0 && (
-                                                                    <div key={cor} className={`w-10 h-10 rounded-full ${bg} flex items-center justify-center text-white`}>
-                                                                        <div className=""></div>
-                                                                        <span className={clsx("font-bold", {
-                                                                            "text-black": cor === "branca",
-                                                                        })}>{count}</span>
-                                                                    </div>
-                                                                );
-                                                            })}
+                                                                    return count > 0 && (
+                                                                        <div key={cor} className={`w-10 h-10 rounded-full ${bg} flex items-center justify-center text-white`}>
+                                                                            <div className=""></div>
+                                                                            <span className={clsx("font-bold", {
+                                                                                "text-black": cor === "branca",
+                                                                            })}>{count}</span>
+                                                                        </div>
+                                                                    );
+                                                                })}
+                                                            </div>
                                                         </div>
+                                                        <p className="order-1 text-white text-xl font-black bg-violet-600 w-full rounded-md text-center">{tam} <span className="text-sm">[{countTam}]</span></p>
                                                     </div>
-                                                    <p className="order-1 text-white text-xl font-black bg-violet-600 w-full rounded-md text-center">{tam} <span className="text-sm">[{countTam}]</span></p>
-                                                </div>
-                                            );
-                                        })}
+                                                );
+                                            })}
+                                        </div>
                                     </div>
                                 );
                             })}
