@@ -78,10 +78,11 @@ export function Requests() {
                         </div>
                         <div className="w-full flex flex-col gap-10">
                             {modelos.map(modelo => {
+                                let countModelo = 0;
+                                let countPaidModelo = 0;
                                 return (
                                     <div key={modelo} className="flex flex-col gap-5">
-                                        <p className="text-white text-2xl font-black">{modelo === "classica" ? "Clássica" : "Alternativa"}</p>
-                                        <div className="flex flex-wrap w-[20rem] gap-6">
+                                        <div className="order-2 flex flex-wrap w-[20rem] gap-6">
                                             {tamanhos.map(tam => {
                                                 let countTam = 0;
                                                 return (
@@ -97,10 +98,13 @@ export function Requests() {
 
                                                                     requests.forEach(request => {
                                                                         console.log(request);
-                                                                        if (request.modelo === modelo && request.tamanho === tam && request.cor === cor) count++;
+                                                                        if (request.modelo === modelo && request.tamanho === tam && request.cor === cor) {
+                                                                            count++;
+                                                                            countTam++;
+                                                                            countModelo++;
+                                                                            if (request.pay) countPaidModelo++;
+                                                                        }
                                                                     });
-
-                                                                    countTam = countTam + count;
 
                                                                     return count > 0 && (
                                                                         <div key={cor} className={`w-10 h-10 rounded-full ${bg} flex items-center justify-center text-white`}>
@@ -118,6 +122,9 @@ export function Requests() {
                                                 );
                                             })}
                                         </div>
+                                        <p className="order-1 text-white text-2xl font-black">
+                                            {modelo === "classica" ? "Clássica" : "Alternativa"} <span className="text-sm">[<span className="text-green-500 text-lg">{countPaidModelo}</span>/{countModelo}]</span>
+                                        </p>
                                     </div>
                                 );
                             })}
