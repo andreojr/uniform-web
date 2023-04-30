@@ -63,8 +63,13 @@ export function Requests() {
                                     <span className="text-green-500 text-base">R$ {cash}<span className="text-sm">,00</span></span>
                                     <span className="text-zinc-400 text-sm">/ R$ {requests.length * precoUnitario}<span className="text-xs">,00</span></span>
                                 </div>
+                                <div className="text-white font-bold text-xs flex items-end gap-1 mt-1">
+                                    <span>Frete:</span>
+                                    <span className="text-yellow-600">R$ {((cash/precoUnitario) * 0.68).toFixed(2).replace(".", ",")}</span>
+                                    <span className="text-zinc-400">/ R$ 52,20</span>
+                                </div>
                             </div>
-                            <CircularProgressbar value={(cash / (requests.length * precoUnitario)) * 100} text={`${Math.round((cash / (requests.length * precoUnitario)) * 100)}%`} className="w-[4.5rem] h-[4.5rem] font-black" styles={buildStyles({
+                            <CircularProgressbar value={(cash / (requests.length * precoUnitario)) * 100} text={`${Math.round((cash / (requests.length * precoUnitario)) * 100)}%`} className="w-[5rem] h-[5rem] font-black" styles={buildStyles({
                                 textColor: '#fff',
                                 textSize: '1.5rem',
                                 pathColor: '#7c3aed',
