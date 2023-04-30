@@ -87,9 +87,14 @@ export function Home() {
                                 {(mySolic.length > 0) && (
                                     <div className="w-full flex justify-between items-center">
                                         <h4 className="font-black text-xl">Solicitações</h4>
-                                        <Link to={`/cadastro/${user.matricula}`}>
-                                            <Plus size={24} />
-                                        </Link>
+                                        {etapaAtual === 1 ?
+                                            <Link to={`/cadastro/${user.matricula}`}>
+                                                <Plus size={24} />
+                                            </Link> :
+                                            <div className="cursor-not-allowed">
+                                                <Plus size={24} />
+                                            </div>
+                                        }
                                     </div>
                                 )}
 

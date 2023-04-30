@@ -9,6 +9,7 @@ import { precoUnitario } from "./Cadastro";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import * as ScrollArea from '@radix-ui/react-scroll-area';
+import { freteTotal } from "./Pay";
 
 interface Request {
     id: string;
@@ -59,14 +60,14 @@ export function Requests() {
                                     <span className="text-zinc-400 font-normal text-lg">/{requests.length}</span>
                                     <span className="text-violet-600 font-black text-2xl">Solicitações</span>
                                 </h1>
-                                <div className="text-white font-bold text-base flex items-end gap-1">
-                                    <span className="text-green-500 text-base">R$ {cash}<span className="text-sm">,00</span></span>
+                                <div className="text-white text-base flex items-end gap-1">
+                                    <span className="text-green-500 text-base font-bold">R$ {cash}<span className="text-sm">,00</span></span>
                                     <span className="text-zinc-400 text-sm">/ R$ {requests.length * precoUnitario}<span className="text-xs">,00</span></span>
                                 </div>
-                                <div className="text-white font-bold text-xs flex items-end gap-1 mt-1">
+                                <div className="text-white text-xs flex items-end gap-1 mt-1">
                                     <span>Frete:</span>
-                                    <span className="text-yellow-600">R$ {((cash/precoUnitario) * 0.68).toFixed(2).replace(".", ",")}</span>
-                                    <span className="text-zinc-400">/ R$ 52,20</span>
+                                    <span className="text-yellow-600 font-bold">R$ {((cash/precoUnitario) * 0.68).toFixed(2).replace(".", ",")}</span>
+                                    <span className="text-zinc-400">/ R$ {freteTotal.toFixed(2).replace(".", ",")}</span>
                                 </div>
                             </div>
                             <CircularProgressbar value={(cash / (requests.length * precoUnitario)) * 100} text={`${Math.round((cash / (requests.length * precoUnitario)) * 100)}%`} className="w-[5rem] h-[5rem] font-black" styles={buildStyles({
@@ -117,13 +118,13 @@ export function Requests() {
                                                                 })}
                                                             </div>
                                                         </div>
-                                                        <p className="order-1 text-white text-xl font-black bg-violet-600 w-full rounded-md text-center">{tam} <span className="text-sm">[{countTam}]</span></p>
+                                                        <p className="order-1 text-white text-xl font-black bg-violet-600 w-full rounded-md text-center">{tam} <span className="text-sm font-normal">[{countTam}]</span></p>
                                                     </div>
                                                 );
                                             })}
                                         </div>
                                         <p className="order-1 text-white text-2xl font-black">
-                                            {modelo === "classica" ? "Clássica" : "Alternativa"} <span className="text-sm">[<span className="text-green-500 text-lg">{countPaidModelo}</span>/{countModelo}]</span>
+                                            {modelo === "classica" ? "Clássica" : "Alternativa"} <span className="text-sm font-normal">[<span className="text-green-500 text-xl font-black">{countPaidModelo}</span>/{countModelo}]</span>
                                         </p>
                                     </div>
                                 );

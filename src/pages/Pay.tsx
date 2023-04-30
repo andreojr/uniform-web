@@ -20,7 +20,7 @@ interface PixInfoProps {
     hash: string;
 }
 
-const freteTotal = 52.2;
+export const freteTotal = 52.2;
 
 export function Pay() {
     const { user_id } = useParams();
