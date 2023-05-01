@@ -86,6 +86,7 @@ export function Requests() {
                                         <div className="order-2 flex flex-wrap w-[20rem] gap-6">
                                             {tamanhos.map(tam => {
                                                 let countTam = 0;
+                                                let countPaidTam = 0;
                                                 return (
                                                     <div key={tam} className="w-[9.25rem] bg-zinc-700 rounded-md flex flex-col gap-1">
                                                         <div className="order-2 w-full p-2">
@@ -93,23 +94,30 @@ export function Requests() {
                                                                 {cores.map(cor => {
                                                                     let bg;
                                                                     let count = 0;
+                                                                    let paid = 0;
                                                                     colors.forEach(color => {
                                                                         if (color.color === cor) bg = color.bg;
                                                                     });
 
                                                                     requests.forEach(request => {
-                                                                        console.log(request);
                                                                         if (request.modelo === modelo && request.tamanho === tam && request.cor === cor) {
                                                                             count++;
                                                                             countTam++;
                                                                             countModelo++;
-                                                                            if (request.pay) countPaidModelo++;
+                                                                            if (request.pay) {
+                                                                                paid++;
+                                                                                countPaidTam++;
+                                                                                countPaidModelo++;
+                                                                            }
                                                                         }
                                                                     });
 
+                                                                    const opacity = Math.round(paid/count * 10) * 10;
                                                                     return count > 0 && (
-                                                                        <div key={cor} className={`w-10 h-10 rounded-full ${bg} flex items-center justify-center text-white`}>
-                                                                            <div className=""></div>
+                                                                        <div key={cor} className={clsx(`w-10 h-10 rounded-full ${bg} opacity-${opacity} flex items-center justify-center text-white relative`, {
+                                                                            "opacity-5": opacity === 0,
+                                                                        })}>
+                                                                            
                                                                             <span className={clsx("font-bold", {
                                                                                 "text-black": cor === "branca",
                                                                             })}>{count}</span>
@@ -118,7 +126,7 @@ export function Requests() {
                                                                 })}
                                                             </div>
                                                         </div>
-                                                        <p className="order-1 text-white text-xl font-black bg-violet-600 w-full rounded-md text-center">{tam} <span className="text-sm font-normal">[{countTam}]</span></p>
+                                                        <p className="order-1 text-white text-xl font-black bg-violet-600 w-full rounded-md text-center">{tam} <span className="text-sm font-normal text-violet-300">[<span className="text-lg font-bold text-white">{countPaidTam}</span>/{countTam}]</span></p>
                                                     </div>
                                                 );
                                             })}

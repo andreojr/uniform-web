@@ -184,7 +184,7 @@ export function Home() {
                 </button>
                 {etapaAtual === 2 && (
                     <button className="w-52 bg-violet-600 rounded-md flex items-center justify-center py-2 transition-colors hover:bg-violet-500">
-                        <Link to="/requests"><span className="text-white text-lg">Ver Pedido</span></Link>
+                        <Link to="/requests"><span className="text-white text-lg">Ver pedido</span></Link>
                     </button>
                 )}
                 {etapaAtual >= 3 && (
