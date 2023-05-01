@@ -113,10 +113,9 @@ export function Requests() {
                                                                     });
 
                                                                     const opacity = Math.round(paid/count * 10) * 10;
+                                                                    console.log(opacity);
                                                                     return count > 0 && (
-                                                                        <div key={cor} className={clsx(`w-10 h-10 rounded-full ${bg} opacity-${opacity} flex items-center justify-center text-white relative`, {
-                                                                            "opacity-5": opacity === 0,
-                                                                        })}>
+                                                                        <div key={cor} style={{ opacity: opacity === 0 ? "5%" : `${opacity}%`  }} className={`w-10 h-10 rounded-full ${bg} flex items-center justify-center text-white relative`}>
                                                                             
                                                                             <span className={clsx("font-bold", {
                                                                                 "text-black": cor === "branca",
