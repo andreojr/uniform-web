@@ -12,7 +12,8 @@ interface User {
     nome: string;
     matricula: string;
     curso: string;
-    pay:boolean;
+    pay: boolean;
+    count: number;
 }
 
 export function AdmPay() {
@@ -68,7 +69,7 @@ export function AdmPay() {
                                 return (
                                     <div key={user.id} className="w-full bg-zinc-700 rounded-md flex flex-col p-2 gap-2 items-center justify-center text-center">
                                         <div>
-                                            <p className="text-xl font-bold">{user.nome.trim().split(" ")[0]}</p>
+                                            <p className="text-xl font-bold">{user.nome.trim().split(" ")[0]} <span className="text-base font-normal text-yellow-600">[{user.count}]</span></p>
                                             <span className="text-zinc-500">{user.matricula}</span>
                                         </div>
 

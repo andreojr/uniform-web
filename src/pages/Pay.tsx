@@ -7,9 +7,10 @@ import logo from "../assets/UniForm.svg";
 
 // QR Codes
     import qrcode from "../assets/qrcode.jpeg";
-    import qrcode1 from "../assets/qrcode_1x.jpeg";
-    import qrcode2 from "../assets/qrcode_2x.jpeg";
-    import qrcode3 from "../assets/qrcode_3x.jpeg";
+    import qrcode1 from "../assets/qrcode_1x.png";
+    import qrcode2 from "../assets/qrcode_2x.png";
+    import qrcode3 from "../assets/qrcode_3x.png";
+    import qrcode4 from "../assets/qrcode_4x.png";
 import { Check, CircleNotch, Copy, Info, WhatsappLogo } from "@phosphor-icons/react";
 import copy from "copy-to-clipboard";
 import clsx from "clsx";
@@ -39,10 +40,25 @@ export function Pay() {
     }, []);
     useEffect(() => {
         if (value) {
+            const count = value / precoUnitario;
             api.get("/requests/count").then(response => {
-                const frete = freteTotal / response.data;
-                setFrete(frete * (value / precoUnitario));
+                const frete = Number((freteTotal / response.data).toFixed(2));
+                setFrete(frete * count);
             });
+            
+            if (count === 1) {
+                pixInfo.qrcode = qrcode1;
+                pixInfo.hash = "00020126330014BR.GOV.BCB.PIX011185930656517520400005303986540527.685802BR5916Andre L O Junior6008Salvador621305091xUNIFORM6304AF22";
+            } else if (count === 2) {
+                pixInfo.qrcode = qrcode2;
+                pixInfo.hash = "00020126330014BR.GOV.BCB.PIX011185930656517520400005303986540555.365802BR5916Andre L O Junior6008Salvador621305092xUNIFORM630472CE";
+            } else if (count === 3) {
+                pixInfo.qrcode = qrcode3;
+                pixInfo.hash = "00020126330014BR.GOV.BCB.PIX011185930656517520400005303986540583.045802BR5916Andre L O Junior6008Salvador621305093xUNIFORM6304D6E5";
+            } else if (count === 4) {
+                pixInfo.qrcode = qrcode4;
+                pixInfo.hash = "00020126330014BR.GOV.BCB.PIX0111859306565175204000053039865406110.725802BR5916Andre L O Junior6008Salvador621305094xUNIFORM6304519A";
+            }
         }
     }, [value]);
 
@@ -65,7 +81,7 @@ export function Pay() {
                             backgroundSize: 'cover',
                             backgroundRepeat: 'no-repeat',
                         }}
-                        className="w-[14rem] h-[14rem] rounded-md scale-[1.8]"
+                        className="w-[14rem] h-[14rem] rounded-md"
                     />
                 </div>
                 <div className="bg-zinc-700 w-[14rem] p-4 rounded-md relative">
