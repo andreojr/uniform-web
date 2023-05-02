@@ -91,14 +91,14 @@ export function Home() {
                                             <Link to={`/cadastro/${user.matricula}`}>
                                                 <Plus size={24} />
                                             </Link> :
-                                            <div className="cursor-not-allowed">
+                                            <div className="cursor-not-allowed text-zinc-700">
                                                 <Plus size={24} />
                                             </div>
                                         }
                                     </div>
                                 )}
 
-                                <ScrollArea.Root className="!static w-full h-[15rem] overflow-hidden flex justify-center">
+                                <ScrollArea.Root className="!static w-full h-[10rem] overflow-hidden flex justify-center">
                                     <ScrollArea.Viewport className="w-full h-full">
                                         <div className="grid grid-cols-2 grid-flow-row w-full gap-10">
                                             {(mySolic.length > 0) && mySolic.map(shirt => {
