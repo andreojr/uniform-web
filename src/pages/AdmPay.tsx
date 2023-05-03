@@ -33,6 +33,7 @@ export function AdmPay() {
 
     useEffect(() => {
         if (users) {
+            setLoading(false);
         }
     }, [users]);
 
@@ -43,7 +44,6 @@ export function AdmPay() {
             await api.get(`/paypass-verify/${pass}`);
             setPass("");
             setPassVerify(true);
-            setLoading(false);
             setError(false);
         } catch(e) {
             setError(true);
@@ -56,32 +56,39 @@ export function AdmPay() {
         setPassVerify(false);
     }
 
+    function countPaid() {
+        return users ? users.filter(user => user.pay) : [];
+    }
+
     return (
-        <div className="pt-12 flex flex-col items-center gap-16 text-white">
+        <div className="pt-12 flex flex-col items-center gap-4 text-white">
             <Link className="flex flex-col" to="/">
                 <img src={logo} alt="UniForm" className="h-7" />
             </Link>
-            {(!loading && passVerify) ? (
+            {(users && !loading && passVerify) &&
                 <ScrollArea.Root className="!static w-full h-full overflow-hidden flex justify-center">
                     <ScrollArea.Viewport className="w-full h-full pb-16">
-                        <div className="grid grid-flow-row grid-cols-2 gap-5">
-                            {users?.map(user => {
-                                return (
-                                    <div key={user.id} className="w-full bg-zinc-700 rounded-md flex flex-col p-2 gap-2 items-center justify-center text-center">
-                                        <div>
-                                            <p className="text-xl font-bold">{user.nome.trim().split(" ")[0]} <span className="text-base font-normal text-yellow-600">[{user.count}]</span></p>
-                                            <span className="text-zinc-500">{user.matricula}</span>
-                                        </div>
+                        <div className="flex flex-col gap-14">
+                            <p className="text-center text-xl font-bold"><span className="text-green-500 font-bold text-xl">{countPaid().length}</span><span className="text-sm font-normal text-zinc-400">/{users.length}</span> Usuários</p>
+                            <div className="grid grid-flow-row grid-cols-2 gap-5">
+                                {users.map(user => {
+                                    return (
+                                        <div key={user.id} className="w-full bg-zinc-700 rounded-md flex flex-col p-2 gap-2 items-center justify-center text-center">
+                                            <div>
+                                                <p className="text-xl font-bold">{user.nome.trim().split(" ")[0]} <span className="text-base font-normal text-yellow-600">[{user.count}]</span></p>
+                                                <span className="text-zinc-500">{user.matricula}</span>
+                                            </div>
 
-                                        <button onClick={() => handleTogglePay(user)} className={clsx("w-full flex rounded-md justify-center py-2", {
-                                            "bg-red-500": !user.pay,
-                                            "bg-green-500": user.pay,
-                                        })}>
-                                            {user.pay ? <Check size={16} className="text-white" /> : <X size={16} className="text-white" />}
-                                        </button>
-                                    </div>
-                                );
-                            })}
+                                            <button onClick={() => handleTogglePay(user)} className={clsx("w-full flex rounded-md justify-center py-2", {
+                                                "bg-red-500": !user.pay,
+                                                "bg-green-500": user.pay,
+                                            })}>
+                                                {user.pay ? <Check size={16} className="text-white" /> : <X size={16} className="text-white" />}
+                                            </button>
+                                        </div>
+                                    );
+                                })}
+                            </div>
                         </div>
                     </ScrollArea.Viewport>
                     <ScrollArea.Scrollbar orientation="vertical">
@@ -92,9 +99,11 @@ export function AdmPay() {
                     </ScrollArea.Scrollbar>
                     <ScrollArea.Corner />
                 </ScrollArea.Root>
-            ) : ((loading && !error) ? 
-                <div className="flex items-center justify-center h-full"><CircleNotch size={32} className="animate-spin text-white" /></div>
-                :
+            }
+
+            {(loading && !error && !users) && <div className="flex items-center justify-center h-full"><CircleNotch size={32} className="animate-spin text-white" /></div>}
+            {
+                (!loading && !users) &&
                 <form className="flex flex-col justify-center h-full gap-5">
                     <Input
                         placeholder="Senha"
@@ -109,7 +118,7 @@ export function AdmPay() {
                         <ArrowFatRight className="text-white" size={24} weight="fill" />
                     </button>
                 </form>
-            )}
+            }
         </div>
     );
 }
