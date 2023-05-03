@@ -4,21 +4,13 @@ import { api } from "../lib/api";
 import { precoUnitario } from "./Cadastro";
 
 import logo from "../assets/UniForm.svg";
-
-// QR Codes
-    import qrcode from "../assets/qrcode.jpeg";
-    import qrcode1 from "../assets/qrcode_1x.png";
-    import qrcode2 from "../assets/qrcode_2x.png";
-    import qrcode3 from "../assets/qrcode_3x.png";
-    import qrcode4 from "../assets/qrcode_4x.png";
 import { Check, CircleNotch, Copy, Info, WhatsappLogo } from "@phosphor-icons/react";
 import copy from "copy-to-clipboard";
 import clsx from "clsx";
-import { handleShowName } from "./Home";
 
 interface PixInfoProps {
-    qrcode: string;
     hash: string;
+    qrcode: string;
 }
 
 export const freteTotal = 52.2;
@@ -27,47 +19,26 @@ export function Pay() {
     const { user_id } = useParams();
     const [frete, setFrete] = useState<number | null>(null);
     const [value, setValue] = useState<number | null>(null);
-    const [pixInfo, setPixInfo] = useState<PixInfoProps>({qrcode, hash: "00020101021126790014br.gov.bcb.pix0136f0bdb4f2-57d8-4db8-bf88-971a72076ffb0217UniForms  EngComp5204000053039865802BR5919ANDRE L DE O JUNIOR6008SALVADOR62070503***630436DD"});
+    const [pixInfo, setPixInfo] = useState<PixInfoProps | null>(null);
     const [copied, setCopied] = useState(false);
 
     useEffect(() => {
-        api.get(`/requests/${user_id}`).then(response => {
-            console.log(response.data);
+        api.get(`/users/generate-pay/${user_id}`).then(response => {
             if (response.data) {
+                console.log(response.data);
                 setValue(response.data.count * precoUnitario);
+                setFrete(response.data.frete);
+                setPixInfo(response.data.pixInfo);
             }
         });
     }, []);
-    useEffect(() => {
-        if (value) {
-            const count = value / precoUnitario;
-            api.get("/requests/count").then(response => {
-                const frete = Number((freteTotal / response.data).toFixed(2));
-                setFrete(frete * count);
-            });
-            
-            if (count === 1) {
-                pixInfo.qrcode = qrcode1;
-                pixInfo.hash = "00020126330014BR.GOV.BCB.PIX011185930656517520400005303986540527.685802BR5916Andre L O Junior6008Salvador621305091xUNIFORM6304AF22";
-            } else if (count === 2) {
-                pixInfo.qrcode = qrcode2;
-                pixInfo.hash = "00020126330014BR.GOV.BCB.PIX011185930656517520400005303986540555.365802BR5916Andre L O Junior6008Salvador621305092xUNIFORM630472CE";
-            } else if (count === 3) {
-                pixInfo.qrcode = qrcode3;
-                pixInfo.hash = "00020126330014BR.GOV.BCB.PIX011185930656517520400005303986540583.045802BR5916Andre L O Junior6008Salvador621305093xUNIFORM6304D6E5";
-            } else if (count === 4) {
-                pixInfo.qrcode = qrcode4;
-                pixInfo.hash = "00020126330014BR.GOV.BCB.PIX0111859306565175204000053039865406110.725802BR5916Andre L O Junior6008Salvador621305094xUNIFORM6304519A";
-            }
-        }
-    }, [value]);
 
     function handleCopyHash(str: string) {
         copy(str);
         setCopied(true);
     }
 
-    return (frete && value) ? (
+    return (frete && value && pixInfo) ? (
         <div className="text-white flex flex-col py-12">
             <Link className="flex flex-col" to="/">
                 <img src={logo} alt="UniForm" className="h-7" />
@@ -85,7 +56,7 @@ export function Pay() {
                     />
                 </div>
                 <div className="bg-zinc-700 w-[14rem] p-4 rounded-md relative">
-                    <p className="text-xs w-full break-all text-zinc-400">{pixInfo.hash.slice(0, 100)}</p>
+                    <p className="text-xs w-full break-all text-zinc-400">{pixInfo.hash}</p>
                     <button onClick={() => handleCopyHash(pixInfo.hash)} className={clsx("text-white flex items-center justify-center gap-3 w-full absolute bottom-0 left-0 rounded-md py-3", {
                         "bg-violet-600": !copied,
                         "bg-green-500": copied,
