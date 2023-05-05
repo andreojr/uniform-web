@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import logo from "../assets/UniForm.svg";
-import { Check, CircleNotch, CurrencyDollar, Eye, Info, Plus, SignOut, Trash, WhatsappLogo } from "@phosphor-icons/react";
+import { Check, CircleNotch, CurrencyDollar, Eye, Gear, Info, Plus, SignOut, Trash, WhatsappLogo } from "@phosphor-icons/react";
 import { api } from "../lib/api";
 import { colors } from "../components/Shirts";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
@@ -68,7 +68,7 @@ export function Home() {
                 (mySolic) ?
                     (
                         <>
-                            <div className="flex flex-col">
+                            <div className="flex flex-col gap-5">
                                 <img src={logo} alt="UniForm" className="h-7" />
                             </div>
                             <div className="flex flex-col gap-10 h-full justify-center">
@@ -130,16 +130,13 @@ export function Home() {
 
 
                                 {etapaAtual < 3 ? (
-                                    <div className="flex flex-col gap-5">
-                                        <button className="w-full bg-violet-600 rounded-md flex items-center justify-center py-2 hover:bg-violet-500 transition-colors">
+                                    <div className="flex items-center gap-2">
+                                        <button className="w-5/6 bg-violet-600 rounded-md flex items-center justify-center py-2 hover:bg-violet-500 transition-colors">
                                             <Link to="/visao-geral"><span className="text-white text-lg transition-all font-bold flex gap-2 items-center"><Eye size={24} />Visão geral</span></Link>
                                         </button>
-                                        {
-                                            user.matricula === "223116037" &&
-                                            <button className="w-full bg-white text-violet-600 rounded-md flex items-center justify-center py-2 hover:text-violet-500 transition-colors">
-                                                <Link to="/adm-pay"><span className="text-lg transition-all font-bold flex gap-2 items-center"><CurrencyDollar size={24} />Pagamentos</span></Link>
-                                            </button>
-                                        }
+                                        <button onClick={() => setUser(null)} className="w-1/6 flex items-center bg-red-500 rounded-md py-2 gap-2 justify-center">
+                                            <SignOut size={24} />
+                                        </button>
                                     </div>
                                 ) : (
                                     <button onClick={() => setUser(null)} className="bg-red-500 rounded-md flex items-center justify-center gap-1 py-2">
@@ -148,15 +145,28 @@ export function Home() {
                                     </button>
                                 )}
 
-                                { }
-
-                                <div className="flex flex-col gap-2 items-center justify-center">
-                                    <p className="text-white text-base">Alguma dúvida?</p>
-                                    <a target="__blank" href="https://wa.me/5571984760838" className="w-7/12 flex justify-center items-center gap-2 bg-white rounded-md py-2">
-                                        <WhatsappLogo size={24} className="text-green-500" weight="fill" />
-                                        <span className="text-green-500">Fale comigo!</span>
-                                    </a>
-                                </div>
+                                {
+                                    user.matricula === "223116037"
+                                    ?
+                                    <div className="flex flex-col gap-2 items-center justify-center">
+                                        <p className="text-white text-base flex items-center gap-2">
+                                            <Gear size={24} />
+                                            Configurações
+                                        </p>
+                                        <Link to="/adm-pay" className="w-7/12 flex justify-center items-center gap-2 bg-white rounded-md py-2">
+                                            <CurrencyDollar size={24} className="text-green-500" weight="fill" />
+                                            <span className="text-green-500">Pagamentos</span>
+                                        </Link>
+                                    </div>
+                                    :
+                                    <div className="flex flex-col gap-2 items-center justify-center">
+                                        <p className="text-white text-base">Alguma dúvida?</p>
+                                        <a target="__blank" href="https://wa.me/5571984760838" className="w-7/12 flex justify-center items-center gap-2 bg-white rounded-md py-2">
+                                            <WhatsappLogo size={24} className="text-green-500" weight="fill" />
+                                            <span className="text-green-500">Fale comigo!</span>
+                                        </a>
+                                    </div>
+                                }
                             </div>
                         </>
                     )
