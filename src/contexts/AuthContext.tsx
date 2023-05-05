@@ -7,10 +7,11 @@ interface AuthContextProps {
     signIn: (userData: User) => Promise<void>;
 }
 
-interface User {
+export interface User {
     id: string;
     nome: string;
     matricula: string;
+    confirmado: boolean;
 }
 
 interface AuthProviderProps {

@@ -8,6 +8,7 @@ import { Pay } from "./pages/Pay";
 import { Requests } from "./pages/Requests";
 import { VisaoGeral } from "./pages/VisaoGeral";
 import { AdmPay } from "./pages/AdmPay";
+import { ConfirmarPedido } from "./pages/ConfirmarPedido";
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/cadastro" element={<Cadastro />} />
             <Route path="/cadastro-finalizado" element={<CadastroFinalizado />} />
+            <Route path="/confirmar-pedido" element={<ConfirmarPedido />} />
             <Route path="/login" element={<Login />} />
             <Route path="/requests" element={<Requests />} />
             <Route path="/visao-geral" element={<VisaoGeral />} />

@@ -64,7 +64,7 @@ export function Pay() {
         setCopied(true);
     }
 
-    return (frete && value && pay) ? (
+    return (user_id && frete && value && pay) ? (
         <div className="text-white flex flex-col py-12">
             <Link className="flex flex-col" to="/">
                 <img src={logo} alt="UniForm" className="h-7" />

@@ -20,6 +20,10 @@ interface Request {
     pay: boolean;
 }
 
+export const modelos = ["classica", "alternativa"];
+export const tamanhos = ["P", "M", "G", "GG"];
+export const cores = ["preta", "cinza", "branca", "verde", "azul", "azul_claro", "vermelha", "vinho"];
+
 export function Requests() {
 
     const [requests, setRequests] = useState<Array<Request> | null>(null);
@@ -41,10 +45,6 @@ export function Requests() {
             setCash(tempCash);
         }
     }, [requests]);
-
-    const modelos = ["classica", "alternativa"];
-    const tamanhos = ["P", "M", "G", "GG"];
-    const cores = ["preta", "cinza", "branca", "verde", "azul", "azul_claro", "vermelha", "vinho"];
 
     return (requests && cash !== null) ? (
         <ScrollArea.Root className="!static w-full h-full overflow-hidden flex justify-center">

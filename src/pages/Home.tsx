@@ -71,7 +71,7 @@ export function Home() {
                             <div className="flex flex-col gap-5">
                                 <img src={logo} alt="UniForm" className="h-7" />
                             </div>
-                            <div className="flex flex-col gap-10 h-full justify-center">
+                            <div className="flex flex-col gap-8 h-full justify-center">
                                 <div className="flex flex-col items-center">
                                     <p className="font-black text-xl">Olá, {handleShowName(user.nome)}!</p>
                                     {mySolic.length > 0 && (
@@ -91,16 +91,16 @@ export function Home() {
                                             <Link to={`/cadastro/${user.matricula}`}>
                                                 <Plus size={24} />
                                             </Link> :
-                                            <div className="cursor-not-allowed text-zinc-700">
-                                                <Plus size={24} />
-                                            </div>
+                                            <button onClick={() => setUser(null)} className="flex items-center bg-red-500 rounded-md p-2 justify-center">
+                                                <SignOut size={20} />
+                                            </button>
                                         }
                                     </div>
                                 )}
 
-                                <ScrollArea.Root className="!static w-full h-[10rem] overflow-hidden flex justify-center">
+                                <ScrollArea.Root className="!static w-full h-48 overflow-hidden flex justify-center">
                                     <ScrollArea.Viewport className="w-full h-full">
-                                        <div className="grid grid-cols-2 grid-flow-row w-full gap-10">
+                                        <div className="grid grid-cols-2 grid-flow-row w-full gap-4">
                                             {(mySolic.length > 0) && mySolic.map(shirt => {
 
                                                 let preview;
@@ -109,12 +109,11 @@ export function Home() {
                                                 });
 
                                                 return !!preview && (
-                                                    <div key={shirt.id} className="relative flex flex-col items-center bg-zinc-700 rounded-md p-2">
+                                                    <div key={shirt.id} className="h-32 relative flex flex-col items-center bg-zinc-700 rounded-md p-2">
                                                         <img src={preview} alt="Preview" className="h-32" />
                                                         <p className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-zinc-700/70 p-2 rounded-md font-black text-sm">{shirt.tamanho}</p>
                                                         {etapaAtual === 1 && <Trash onClick={() => handleDeleteSolic(shirt.id)} size={24} className="text-red-400 cursor-pointer" />}
                                                     </div>
-
                                                 );
                                             })}
                                         </div>
@@ -129,27 +128,18 @@ export function Home() {
                                 </ScrollArea.Root>
 
 
-                                {etapaAtual < 3 ? (
-                                    <div className="flex items-center gap-2">
-                                        <button className="w-5/6 bg-violet-600 rounded-md flex items-center justify-center py-2 hover:bg-violet-500 transition-colors">
-                                            <Link to="/visao-geral"><span className="text-white text-lg transition-all font-bold flex gap-2 items-center"><Eye size={24} />Visão geral</span></Link>
-                                        </button>
-                                        <button onClick={() => setUser(null)} className="w-1/6 flex items-center bg-red-500 rounded-md py-2 gap-2 justify-center">
-                                            <SignOut size={24} />
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <button onClick={() => setUser(null)} className="bg-red-500 rounded-md flex items-center justify-center gap-1 py-2">
-                                        <p>Sair</p>
-                                        <SignOut size={24} />
-                                    </button>
-                                )}
+                                
+                                <div className="flex items-center gap-2">
+                                    <Link to="/visao-geral" className="w-full bg-violet-600 rounded-md flex items-center justify-center py-2 hover:bg-violet-500 transition-colors">
+                                        <span className="text-white text-lg transition-all font-bold flex gap-2 items-center"><Eye size={24} />Visão geral</span>
+                                    </Link>
+                                </div>
 
                                 {
                                     user.matricula === "223116037"
                                     ?
                                     <div className="flex flex-col gap-2 items-center justify-center">
-                                        <p className="text-white text-base flex items-center gap-2">
+                                        <p className="text-white text-base flex items-center gap-1">
                                             <Gear size={24} />
                                             Configurações
                                         </p>
@@ -185,22 +175,23 @@ export function Home() {
             </div>
             <div className="flex flex-col justify-center gap-5 h-full">
                 {etapaAtual === 1 && (
-                    <button className="w-52 bg-violet-600 rounded-md flex items-center justify-center py-2 transition-colors hover:bg-violet-500">
-                        <Link to="/cadastro"><span className="text-white text-lg">Adicionar pedidos</span></Link>
-                    </button>
+                    <Link to="/cadastro">
+                        <button className="w-52 bg-violet-600 rounded-md flex items-center justify-center py-2 transition-colors hover:bg-violet-500">
+                            <span className="text-white text-lg">Adicionar pedidos</span>
+                        </button>
+                    </Link>
                 )}
-                <button className="w-52 bg-white rounded-md flex items-center justify-center py-2 group">
-                    <Link to="/login"><span className="text-violet-600 text-lg group-hover:text-violet-500 transition-all">Minhas solicitações</span></Link>
-                </button>
-                {etapaAtual === 2 && (
-                    <button className="w-52 bg-violet-600 rounded-md flex items-center justify-center py-2 transition-colors hover:bg-violet-500">
-                        <Link to="/requests"><span className="text-white text-lg">Ver pedido</span></Link>
+                <Link to="/login">
+                    <button className="w-52 bg-white rounded-md flex items-center justify-center py-2 group">
+                        <span className="text-violet-600 text-lg group-hover:text-violet-500 transition-all">Minhas solicitações</span>
                     </button>
-                )}
-                {etapaAtual >= 3 && (
-                    <button className="w-52 bg-violet-600 rounded-md flex items-center justify-center py-2 transition-colors hover:bg-violet-500">
-                        <Link to="/visao-geral"><span className="text-white text-lg">Visão Geral</span></Link>
-                    </button>
+                </Link>
+                {(etapaAtual >= 2) && (
+                    <Link to="/requests">
+                        <button className="w-52 bg-violet-600 rounded-md flex items-center justify-center py-2 transition-colors hover:bg-violet-500">
+                            <span className="text-white text-lg">Ver pedido</span>
+                        </button>
+                    </Link>
                 )}
             </div>
         </div>
