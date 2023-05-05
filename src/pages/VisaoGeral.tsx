@@ -65,10 +65,10 @@ export function VisaoGeral() {
             descricao: paid ? <p className="flex gap-1 items-start leading-tight text-green-500"><CheckCircle size={16} className="mt-0.5" weight="fill"/> Seu pagamento foi aprovado!</p> : <p className="text-red-500 flex items-center gap-1"><Info size={16} /> Efetue o pagamento.</p>
         },
         {
-            nome: <span>Pedido <span className={clsx("text-sm font-normal", {
+            nome: <span>Pedido {etapaAtual === 3 && <span className={clsx("text-sm font-normal", {
                 "text-yellow-600": Number(conf?.confirms) < Number(conf?.total),
                 "text-green-500": conf?.confirms === conf?.total,
-            })}>{`(${conf?.confirms}/${conf?.total})`}</span></span>,
+            })}>{`(${conf?.confirms}/${conf?.total})`}</span>}</span>,
             link: paid ? (user?.confirmado ? "" : `/confirmar-pedido`) : "",
             descricao: paid ? (
                 !user?.confirmado ? <p className="text-red-500 flex items-center gap-1"><Info size={16} /> Confirme o pedido.</p> : <p className="text-green-500 flex items-center gap-1"><CheckCircle size={16} /> Pedido confirmado!</p>
