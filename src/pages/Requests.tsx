@@ -10,6 +10,7 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import * as ScrollArea from '@radix-ui/react-scroll-area';
 import { freteTotal } from "./Pay";
+import * as Progress from '@radix-ui/react-progress';
 
 interface Request {
     id: string;
@@ -66,7 +67,7 @@ export function Requests() {
                                 </div>
                                 <div className="text-white text-xs flex items-end gap-1 mt-1">
                                     <span>Frete:</span>
-                                    <span className="text-yellow-600 font-bold">R$ {((cash/precoUnitario) * 0.68).toFixed(2).replace(".", ",")}</span>
+                                    <span className="text-yellow-600 font-bold">R$ {((cash/precoUnitario) * (Number((freteTotal / requests.length).toFixed(2)))).toFixed(2).replace(".", ",")}</span>
                                     <span className="text-zinc-400">/ R$ {freteTotal.toFixed(2).replace(".", ",")}</span>
                                 </div>
                             </div>
@@ -113,7 +114,6 @@ export function Requests() {
                                                                     });
 
                                                                     const opacity = Math.round(paid/count * 10) * 10;
-                                                                    console.log(opacity);
                                                                     return count > 0 && (
                                                                         <div key={cor} style={{ opacity: opacity === 0 ? "5%" : `${opacity}%`  }} className={`w-10 h-10 rounded-full ${bg} flex items-center justify-center text-white relative`}>
                                                                             
@@ -125,7 +125,15 @@ export function Requests() {
                                                                 })}
                                                             </div>
                                                         </div>
-                                                        <p className="order-1 text-white text-xl font-black bg-violet-600 w-full rounded-md text-center">{tam} <span className="text-sm font-normal text-violet-300">[<span className="text-lg font-bold text-white">{countPaidTam}</span>/{countTam}]</span></p>
+                                                        <div className="order-1 text-white text-xl font-black bg-violet-600 w-full rounded-md text-center">
+                                                            {tam} <span className="text-sm font-normal text-violet-300">[<span className="text-lg font-bold text-white">{countPaidTam}</span>/{countTam}]</span>
+                                                            <Progress.Root className="relative overflow-hidden w-full h-0.5 bg-violet-700" value={countPaidTam / countTam * 100}>
+                                                                <Progress.Indicator
+                                                                    className="bg-white w-full h-full transition-all"
+                                                                    style={{ transform: `translateX(-${100 - (countPaidTam / countTam * 100)}%)` }}
+                                                                />
+                                                            </Progress.Root>
+                                                        </div>
                                                     </div>
                                                 );
                                             })}
