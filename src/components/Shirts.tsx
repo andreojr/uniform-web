@@ -115,6 +115,7 @@ export function Shirts({ customShirts, setCustomShirts, quantidade }: ShirtsProp
         const voidModel = customShirts[0];
         for (let q = 0; q < quantidade; q++) {
             updateMany.push(voidModel);
+            console.log(voidModel);
         }
         setCustomShirts(updateMany);
     }, [quantidade]);

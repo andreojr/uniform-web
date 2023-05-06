@@ -21,16 +21,12 @@ export function handleShowName(name: string) {
 }
 
 export function Home() {
-    const { signed, user, setUser } = useContext(AuthContext);
+    const { signed, user, setUser, etapaAtual } = useContext(AuthContext);
     const [countSolic, setCountSolic] = useState<number | null>(null);
     const [mySolic, setMySolic] = useState<Array<Solic> | null>(null);
-
-    const [etapaAtual, setEtapaAtual] = useState<number | null>(null);
+    const [edit, setEdit] = useState<boolean>(false);
 
     useEffect(() => {
-        api.get("/etapa-atual").then(response => {
-            setEtapaAtual(response.data);
-        });
         handleCountSolic();
     }, []);
 

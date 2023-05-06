@@ -4,22 +4,18 @@ import { Link, Navigate } from "react-router-dom";
 import clsx from "clsx";
 import { ArrowSquareOut, Check, CheckCircle, Circle, CircleNotch, Divide, DotsThree, Gear, Info, Truck, WhatsappLogo, X } from "@phosphor-icons/react";
 import { useContext, useEffect, useState } from "react";
-import { AuthContext, User } from "../contexts/AuthContext";
+import { AuthContext, User, dataEntrega, dataProd } from "../contexts/AuthContext";
 import { Solic } from "./Home";
 import { api } from "../lib/api";
 
 export function VisaoGeral() {
-    const {user} = useContext(AuthContext);
+    const {user, etapaAtual, setEtapaAtual} = useContext(AuthContext);
 
     const [paid, setPaid] = useState<boolean | null>(null);
     const [mySolic, setMySolic] = useState<Array<Solic> | null>(null);
-    const [etapaAtual, setEtapaAtual] = useState<number | null>(null);
     const [conf, setConf] = useState<{confirms: number; total: number}| null>(null);
 
     useEffect(() => {
-        api.get("/etapa-atual").then(response => {
-            setEtapaAtual(response.data);
-        });
         handleSetMySolics();
         handleSetConfirms();
     }, []);
@@ -50,7 +46,7 @@ export function VisaoGeral() {
                 if (!solic.pay) paid = false;
             });
             setPaid(paid);
-            if (etapaAtual && etapaAtual > 2 && !paid) setEtapaAtual(3);
+            if (etapaAtual && etapaAtual > 3 && !paid) setEtapaAtual(3);
         }
     }, [etapaAtual, mySolic]);
 
@@ -80,15 +76,15 @@ export function VisaoGeral() {
             nome: "Produção",
             descricao:
                 <div className="leading-tight flex flex-col gap-1 text-yellow-600">
-                    <span>O pedido está sendo produzido.<br />Ficará pronto até <span className="font-bold text-white">17/05</span></span>
-                    <span className="flex items-end animate-pulse">...<Gear size={24} className="animate-spin" />...</span>
+                    <span>O pedido está sendo produzido.<br />Ficará pronto até <span className="font-bold text-white">{dataProd.locale("pt-br").format("DD MMMM").replace(" ", " de ")}</span></span>
+                    <span className="flex items-end animate-pulse">__<Gear size={24} className="animate-spin" />__</span>
                 </div>
         },
         {
             nome: "Entrega",
             descricao:
                 <div className="leading-tight flex flex-col gap-1 text-yellow-600">
-                    <span>O pedido está a caminho.<br />Chegará até <span className="font-bold text-white">17/05</span></span><span className="flex items-end animate-bounce">...<Truck size={24} />...</span>
+                    <span>O pedido está a caminho.<br />Chegará até <span className="font-bold text-white">{dataEntrega.locale("pt-br").format("DD MMMM").replace(" ", " de ")}</span></span><span className="flex items-end animate-bounce">...<Truck size={24} />...</span>
                 </div>
         },
         {

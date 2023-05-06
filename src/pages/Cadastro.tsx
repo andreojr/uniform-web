@@ -1,6 +1,6 @@
 import { ArrowFatRight } from "@phosphor-icons/react";
 import logo from "../assets/UniForm.svg";
-import { Color, Shirts } from "../components/Shirts";
+import { Color, Shirts, colors } from "../components/Shirts";
 import { Input } from "../components/Input";
 import * as ToggleGroup from '@radix-ui/react-toggle-group';
 import * as ScrollArea from '@radix-ui/react-scroll-area';
@@ -30,16 +30,24 @@ export interface ShirtProps {
 
 export const precoUnitario = 27;
 
-export function Cadastro({ userExists = false }: { userExists?: boolean; }) {
+export function Cadastro({ userExists = false, edit = false }: { userExists?: boolean; edit?: boolean }) {
     const [userData, setUserData] = useState<UserDataProps>(defaultUserData);
     const [customShirts, setCustomShirts] = useState<Array<ShirtProps>>([{cor:null,tamanho:"",modelo:"classica"}]);
     const [error, setError] = useState(false);
     const navigate = useNavigate();
-    const { matricula } = useParams();
+    const { matricula, shirt_id } = useParams();
     
     useEffect(() => {
         if (userExists && matricula) {
             setUserData({ ...userData, matricula });
+        }
+        if (edit && shirt_id) {
+            api.get(`/request/${shirt_id}`).then(response => {
+                colors.forEach(color => {
+                    if (color.color === response.data.cor) response.data.cor = color;
+                });
+                setCustomShirts([response.data])
+            });
         }
     }, []);
 
@@ -61,10 +69,16 @@ export function Cadastro({ userExists = false }: { userExists?: boolean; }) {
                 return;
             }
 
-            console.log({ nome, matricula, curso, shirts });
-            await api.post("/requests", { nome, matricula, curso, shirts });
-            setError(false);
-            navigate("/cadastro-finalizado");
+            if (!edit) {
+                await api.post("/requests", { nome, matricula, curso, shirts });
+                setError(false);
+                navigate("/cadastro-finalizado");
+            } else {
+                console.log(shirts[0]);
+                await api.patch(`requests/${shirt_id}`, shirts[0]);
+                setError(false);
+                navigate("/confirmar-pedido");
+            }
         } catch(err) {
             setError(true);
         }
@@ -78,67 +92,77 @@ export function Cadastro({ userExists = false }: { userExists?: boolean; }) {
             <ScrollArea.Root className="!static w-full h-full overflow-hidden flex justify-center">
                 <ScrollArea.Viewport className="w-full h-full pb-16">
                     <form className="flex flex-col justify-center gap-12 h-full">
-                        <div className="flex flex-col justify-center gap-3">
-                            {
-                                !userExists &&
-                                <>
-                                    <p className="text-white font-black text-2xl">Cadastro</p>
+                        {
+                            !edit && (
+                                <div className="flex flex-col justify-center gap-3">
+                                    {
+                                        !userExists &&
+                                        <>
+                                            <p className="text-white font-black text-2xl">Cadastro</p>
+                                            <Input
+                                                placeholder="Seu nome"
+                                                value={userData.nome}
+                                                onChange={e => setUserData({...userData, nome: e.target.value})}
+                                            />
+                                        </>
+                                    }
                                     <Input
-                                        placeholder="Seu nome"
-                                        value={userData.nome}
-                                        onChange={e => setUserData({...userData, nome: e.target.value})}
+                                        placeholder="Sua matrícula"
+                                        value={userData.matricula}
+                                        onChange={e => setUserData({...userData, matricula: e.target.value})}
+                                        disabled={userExists ? true : false}
                                     />
-                                </>
-                            }
-                            <Input
-                                placeholder="Sua matrícula"
-                                value={userData.matricula}
-                                onChange={e => setUserData({...userData, matricula: e.target.value})}
-                                disabled={userExists ? true : false}
-                            />
-                            {
-                                !userExists &&
-                                <div className="flex flex-col gap-2">
-                                    <p className="text-white font-black text-md">Curso</p>
-                                    <ToggleGroup.Root type="single" aria-label="Curso" className="flex justify-between gap-5" value={userData.curso}>
-                                        <ToggleGroup.Item disabled className="bg-zinc-700 w-full px-3 py-2 rounded-md data-[state=on]:bg-violet-600 transition-colors" value={userData.curso} aria-label={userData.curso}>
-                                            <span className="font-black text-white">Engenharia de Computação</span>
-                                        </ToggleGroup.Item>
-                                    </ToggleGroup.Root>
+                                    {
+                                        !userExists &&
+                                        <div className="flex flex-col gap-2">
+                                            <p className="text-white font-black text-md">Curso</p>
+                                            <ToggleGroup.Root type="single" aria-label="Curso" className="flex justify-between gap-5" value={userData.curso}>
+                                                <ToggleGroup.Item disabled className="bg-zinc-700 w-full px-3 py-2 rounded-md data-[state=on]:bg-violet-600 transition-colors" value={userData.curso} aria-label={userData.curso}>
+                                                    <span className="font-black text-white">Engenharia de Computação</span>
+                                                </ToggleGroup.Item>
+                                            </ToggleGroup.Root>
+                                        </div>
+                                    }
                                 </div>
-                            }
-                        </div>
+                            )
+                        }
 
-                        <div className="flex flex-col justify-center gap-8">
+                        <div className="flex flex-col justify-center gap-8 w-[15rem]">
                             <div className="flex flex-col gap-5">
                                 <p className="text-white font-black text-2xl">Pedido</p>
-                                <div className="flex w-full h-8 justify-between items-center">
-                                    <p className="text-base text-white font-black">Quantidade: </p>
-                                    <ToggleGroup.Root
-                                        type="single"
-                                        aria-label="Quantidade"
-                                        className="flex gap-5"
-                                        value={String(userData.quantidade)}
-                                        onValueChange={quantidade => {
-                                            setUserData({...userData, quantidade: Number(quantidade) })
-                                        }}
-                                    >
-                                        <ToggleGroup.Item className="bg-zinc-700 w-full px-3 py-2 rounded-md data-[state=on]:bg-violet-600 transition-colors" value="1" aria-label="1">
-                                            <span className="font-black text-white">1</span>
-                                        </ToggleGroup.Item>
-                                        <ToggleGroup.Item className="bg-zinc-700 w-full px-3 py-2 rounded-md data-[state=on]:bg-violet-600 transition-colors" value="2" aria-label="2">
-                                            <span className="font-black text-white">2</span>
-                                        </ToggleGroup.Item>
-                                        <ToggleGroup.Item className="bg-zinc-700 w-full px-3 py-2 rounded-md data-[state=on]:bg-violet-600 transition-colors" value="3" aria-label="3">
-                                            <span className="font-black text-white">3</span>
-                                        </ToggleGroup.Item>
-                                    </ToggleGroup.Root>
-                                </div>
+                                {
+                                    !edit &&
+                                    <div className="flex w-full h-8 justify-between items-center">
+                                        <p className="text-base text-white font-black">Quantidade: </p>
+                                        <ToggleGroup.Root
+                                            type="single"
+                                            aria-label="Quantidade"
+                                            className="flex gap-5"
+                                            value={String(userData.quantidade)}
+                                            onValueChange={quantidade => {
+                                                setUserData({...userData, quantidade: Number(quantidade) })
+                                            }}
+                                        >
+                                            <ToggleGroup.Item className="bg-zinc-700 w-full px-3 py-2 rounded-md data-[state=on]:bg-violet-600 transition-colors" value="1" aria-label="1">
+                                                <span className="font-black text-white">1</span>
+                                            </ToggleGroup.Item>
+                                            <ToggleGroup.Item className="bg-zinc-700 w-full px-3 py-2 rounded-md data-[state=on]:bg-violet-600 transition-colors" value="2" aria-label="2">
+                                                <span className="font-black text-white">2</span>
+                                            </ToggleGroup.Item>
+                                            <ToggleGroup.Item className="bg-zinc-700 w-full px-3 py-2 rounded-md data-[state=on]:bg-violet-600 transition-colors" value="3" aria-label="3">
+                                                <span className="font-black text-white">3</span>
+                                            </ToggleGroup.Item>
+                                        </ToggleGroup.Root>
+                                    </div>
+                                }
                             </div>
                             <Shirts customShirts={customShirts} setCustomShirts={setCustomShirts} quantidade={userData.quantidade} />
-                            <div className="flex justify-between text-base font-black">
-                                <span className="text-white">TOTAL:</span><span className="text-green-500">R$ {userData.quantidade * precoUnitario},00</span>
-                            </div>
+                            {
+                                !edit &&
+                                <div className="flex justify-between text-base font-black">
+                                    <span className="text-white">TOTAL:</span><span className="text-green-500">R$ {userData.quantidade * precoUnitario},00</span>
+                                </div>
+                            }
                         </div>
 
                         <button type="submit" onClick={handleRequest} className={clsx("w-full rounded-md flex items-center justify-center py-2 transition-colors", {

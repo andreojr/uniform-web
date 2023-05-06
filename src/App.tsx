@@ -26,6 +26,7 @@ function App() {
             <Route path="/visao-geral" element={<VisaoGeral />} />
             <Route path="/adm-pay" element={<AdmPay />} />
             <Route path="/cadastro/:matricula" element={<Cadastro userExists />} />
+            <Route path="/editar/:shirt_id" element={<Cadastro edit />} />
             <Route path="/pay/:user_id" element={<Pay />} />
           </Routes>
         </AuthProvider>

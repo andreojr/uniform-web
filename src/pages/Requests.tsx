@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { api } from "../lib/api";
 import { CircleNotch } from "@phosphor-icons/react";
 import { colors } from "../components/Shirts";
@@ -11,6 +11,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import * as ScrollArea from '@radix-ui/react-scroll-area';
 import { freteTotal } from "./Pay";
 import * as Progress from '@radix-ui/react-progress';
+import { AuthContext } from "../contexts/AuthContext";
 
 interface Request {
     id: string;
@@ -26,6 +27,7 @@ export const cores = ["preta", "cinza", "branca", "verde", "azul", "azul_claro",
 
 export function Requests() {
 
+    const { etapaAtual } = useContext(AuthContext);
     const [requests, setRequests] = useState<Array<Request> | null>(null);
     const [cash, setCash] = useState<number | null>(null);
 
@@ -46,7 +48,7 @@ export function Requests() {
         }
     }, [requests]);
 
-    return (requests && cash !== null) ? (
+    return (etapaAtual && requests && cash !== null) ? (
         <ScrollArea.Root className="!static w-full h-full overflow-hidden flex justify-center">
             <ScrollArea.Viewport className="w-full h-full pb-16">
                 <div className="flex flex-col gap-16 pt-12">
@@ -58,20 +60,31 @@ export function Requests() {
                             <div className="flex flex-col">
                                 <h1 className="text-white flex gap-1 items-end">
                                     <span className="text-white font-black text-2xl">{cash/precoUnitario}</span>
-                                    <span className="text-zinc-400 font-normal text-base">/ {requests.length}</span>
+                                    {etapaAtual < 3 && <span className="text-zinc-400 font-normal text-base">/ {requests.length}</span>}
                                     <span className="text-violet-600 font-black text-xl">Solicitações</span>
                                 </h1>
                                 <div className="text-white text-base flex items-end gap-1">
-                                    <span className="text-green-500 text-base font-bold">R$ {cash}<span className="text-sm">,00</span></span>
-                                    <span className="text-zinc-400 text-sm">/ R$ {requests.length * precoUnitario}<span className="text-xs">,00</span></span>
+                                    <span className="text-yellow-600 text-base font-bold">R$ {cash}<span className="text-sm">,00</span></span>
+                                    {etapaAtual < 3 && <span className="text-zinc-400 text-sm">/ R$ {requests.length * precoUnitario}<span className="text-xs">,00</span></span>}
+                                    {etapaAtual >= 3 && <span className="text-zinc-400 font-bold text-sm">+ R$ {freteTotal.toFixed(2).replace(".", ",")}</span>}
                                 </div>
-                                <div className="text-white text-xs flex items-end gap-1 mt-1">
-                                    <span>Frete:</span>
-                                    <span className="text-yellow-600 font-bold">R$ {((cash/precoUnitario) * (Number((freteTotal / requests.length).toFixed(2)))).toFixed(2).replace(".", ",")}</span>
-                                    <span className="text-zinc-400">/ R$ {freteTotal.toFixed(2).replace(".", ",")}</span>
-                                </div>
+                                {
+                                    etapaAtual < 3 &&
+                                    <div className="text-white text-xs flex items-end gap-1 mt-1">
+                                        <span>Frete:</span>
+                                        <span className="text-yellow-600 font-bold">R$ {((cash/precoUnitario) * (Number((freteTotal / requests.length).toFixed(2)))).toFixed(2).replace(".", ",")}</span>
+                                        <span className="text-zinc-400">/ R$ {freteTotal.toFixed(2).replace(".", ",")}</span>
+                                    </div>
+                                }
+                                {
+                                    etapaAtual >= 3 &&
+                                    <div className="text-white text-xs flex items-end gap-1 mt-1">
+                                        <span>Total:</span>
+                                        <span className="text-green-500 font-bold">R$ {(cash + freteTotal).toFixed(2).replace(".", ",")}</span>
+                                    </div>
+                                }
                             </div>
-                            <CircularProgressbar value={(cash / (requests.length * precoUnitario)) * 100} text={`${Math.round((cash / (requests.length * precoUnitario)) * 100)}%`} className="w-[5rem] h-[5rem] font-black" styles={buildStyles({
+                            <CircularProgressbar value={etapaAtual < 3 ? (cash / (requests.length * precoUnitario)) * 100 : 100} text={`${etapaAtual < 3 ? Math.round((cash / (requests.length * precoUnitario)) * 100) : 100}%`} className="w-[5rem] h-[5rem] font-black" styles={buildStyles({
                                 textColor: '#fff',
                                 textSize: '1.5rem',
                                 pathColor: '#7c3aed',
@@ -114,23 +127,34 @@ export function Requests() {
                                                                     });
 
                                                                     const opacity = Math.round(paid/count * 10) * 10;
-                                                                    return count > 0 && (
-                                                                        <div key={cor} style={{ opacity: opacity === 0 ? "5%" : `${opacity}%`  }} className={`w-10 h-10 rounded-full ${bg} flex items-center justify-center text-white relative`}>
-                                                                            
-                                                                            <span className={clsx("font-bold", {
-                                                                                "text-black": cor === "branca",
-                                                                            })}>{count}</span>
-                                                                        </div>
+                                                                    return etapaAtual < 3 ? (
+                                                                        count > 0 && (
+                                                                            <div key={cor} style={{ opacity: opacity === 0 ? "5%" : `${opacity}%`  }} className={`w-10 h-10 rounded-full ${bg} flex items-center justify-center text-white relative`}>
+                                                                                
+                                                                                <span className={clsx("font-bold", {
+                                                                                    "text-black": cor === "branca",
+                                                                                })}>{count}</span>
+                                                                            </div>
+                                                                        )
+                                                                    ) : (
+                                                                        paid > 0 && (
+                                                                            <div key={cor} className={`w-10 h-10 rounded-full ${bg} flex items-center justify-center text-white relative`}>
+                                                                                
+                                                                                <span className={clsx("font-bold", {
+                                                                                    "text-black": cor === "branca",
+                                                                                })}>{paid}</span>
+                                                                            </div>
+                                                                        )
                                                                     );
                                                                 })}
                                                             </div>
                                                         </div>
                                                         <div className="order-1 text-white text-xl font-black bg-violet-600 w-full rounded-md text-center">
-                                                            {tam} <span className="text-sm font-normal text-violet-300">[<span className="text-lg font-bold text-white">{countPaidTam}</span>/{countTam}]</span>
-                                                            <Progress.Root className="relative overflow-hidden w-full h-0.5 bg-violet-700" value={countPaidTam / countTam * 100}>
+                                                            {tam} <span className="text-sm font-normal text-violet-300">[<span className="text-lg font-bold text-white">{countPaidTam}</span>{etapaAtual < 3 && `/${countTam}`}]</span>
+                                                            <Progress.Root className="relative overflow-hidden w-full h-0.5 bg-violet-700" value={etapaAtual < 3 ? countPaidTam / countTam * 100 : 100}>
                                                                 <Progress.Indicator
                                                                     className="bg-white w-full h-full transition-all"
-                                                                    style={{ transform: `translateX(-${100 - (countPaidTam / countTam * 100)}%)` }}
+                                                                    style={{ transform: `translateX(-${100 - (etapaAtual < 3 ? countPaidTam / countTam * 100 : 100)}%)` }}
                                                                 />
                                                             </Progress.Root>
                                                         </div>
@@ -139,7 +163,7 @@ export function Requests() {
                                             })}
                                         </div>
                                         <p className="order-1 text-white text-2xl font-black">
-                                            {modelo === "classica" ? "Clássica" : "Alternativa"} <span className="text-sm font-normal">[<span className="text-green-500 text-xl font-black">{countPaidModelo}</span>/{countModelo}]</span>
+                                            {modelo === "classica" ? "Clássica" : "Alternativa"} <span className="text-sm font-normal">[<span className="text-green-500 text-xl font-black">{countPaidModelo}</span>{etapaAtual < 3 && `/${countModelo}`}]</span>
                                         </p>
                                     </div>
                                 );
