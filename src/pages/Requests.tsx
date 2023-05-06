@@ -64,7 +64,7 @@ export function Requests() {
                                     <span className="text-violet-600 font-black text-xl">Solicitações</span>
                                 </h1>
                                 <div className="text-white text-base flex items-end gap-1">
-                                    <span className="text-yellow-600 text-base font-bold">R$ {cash}<span className="text-sm">,00</span></span>
+                                    <span className="text-green-500 text-base font-bold">R$ {cash}<span className="text-sm">,00</span></span>
                                     {etapaAtual < 3 && <span className="text-zinc-400 text-sm">/ R$ {requests.length * precoUnitario}<span className="text-xs">,00</span></span>}
                                     {etapaAtual >= 3 && <span className="text-zinc-400 font-bold text-sm">+ R$ {freteTotal.toFixed(2).replace(".", ",")}</span>}
                                 </div>
