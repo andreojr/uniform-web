@@ -35,7 +35,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     useEffect(() => {
         api.get("/etapa-atual").then(response => {
-            setEtapaAtual(response.data);
+            if (etapaAtual === 4 && dataProd < dayjs()) {
+                setEtapaAtual(5);
+            } else if (etapaAtual === 5 && dataEntrega < dayjs()) {
+                setEtapaAtual(6);
+            } else {
+                setEtapaAtual(response.data);
+            }
         });
     }, []);
 
