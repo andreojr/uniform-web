@@ -25,8 +25,8 @@ interface AuthProviderProps {
 
 export const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 
-export const dataProd = dayjs("2023-05-26").locale("pt-br");
-export const dataEntrega = dayjs("2023-06-07").locale("pt-br");
+export const dataProd = dayjs("2023-05-15").locale("pt-br");
+export const dataEntrega = dayjs("2023-05-19").locale("pt-br");
 
 export function AuthProvider({ children }: AuthProviderProps) {
     const [signed, setSigned] = useState(false);
