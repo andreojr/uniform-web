@@ -77,8 +77,7 @@ export function VisaoGeral() {
             descricao:
                 <div className="leading-tight flex flex-col gap-1 text-yellow-600">
                     <span>
-                        O pedido está sendo produzido.
-                        {/* <br />Ficará pronto até <span className="font-bold text-white">{dataProd.locale("pt-br").format("DD MMMM").replace(" ", " de ")}</span> */}
+                        O pedido está sendo produzido.<br />Ficará pronto até <span className="font-bold text-white">{dataProd.locale("pt-br").format("DD MMMM").replace(" ", " de ")}</span>
                     </span>
                     <span className="flex items-end animate-pulse">__<Gear size={24} className="animate-spin" />__</span>
                 </div>
