@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import logo from "../assets/UniForm.svg";
-import { Check, CircleNotch, CurrencyDollar, Eye, Gear, Info, Plus, SignOut, Trash, WhatsappLogo } from "@phosphor-icons/react";
+import { Check, CircleNotch, CurrencyDollar, DotsThree, Eye, Gear, Info, Plus, SignOut, Trash, WhatsappLogo } from "@phosphor-icons/react";
 import { api } from "../lib/api";
 import { colors } from "../components/Shirts";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
@@ -142,6 +142,10 @@ export function Home() {
                                         <Link to="/adm-pay" className="w-7/12 flex justify-center items-center gap-2 bg-white rounded-md py-2">
                                             <CurrencyDollar size={24} className="text-green-500" weight="fill" />
                                             <span className="text-green-500">Pagamentos</span>
+                                        </Link>
+                                        <Link to="/solicitacoes" className="w-7/12 flex justify-center items-center gap-2 bg-white rounded-md py-2">
+                                            <DotsThree size={24} className="text-green-500" weight="fill" />
+                                            <span className="text-green-500">Solicitações</span>
                                         </Link>
                                     </div>
                                     :
